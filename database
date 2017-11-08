@@ -22,11 +22,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bookingrecord` (
   `bookingid` int(11) NOT NULL,
-  `date` date NOT NULL,
+  `bookingdate` date NOT NULL,
   `roomid` int(11) NOT NULL,
   `time_start` time NOT NULL,
   `userid` varchar(30) NOT NULL,
-  `time_end` time NOT NULL
+  `time_end` time NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `facultyid` int(11) NOT NULL,
+  `classname` varchar(180) NOT NULL,
+  `capacity` int(11) NOT NULL,
+  `bookingrepeat` tinyint(4) NOT NULL,
+  `end_repeat` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
