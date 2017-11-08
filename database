@@ -24,9 +24,9 @@ CREATE TABLE `bookingrecord` (
   `bookingid` int(11) NOT NULL,
   `date` date NOT NULL,
   `roomid` int(11) NOT NULL,
-  `slotid` int(11) NOT NULL,
+  `time_start` time NOT NULL,
   `userid` varchar(30) NOT NULL,
-  `meetingid` int(11) NOT NULL
+  `time_end` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -56,19 +56,37 @@ INSERT INTO `meeting` (`meetingid`, `meetingname`, `meetingdesc`) VALUES
 
 CREATE TABLE `room` (
   `roomid` int(11) NOT NULL,
-  `roomname` varchar(30) NOT NULL,
-  `roomdescription` varchar(100) NOT NULL,
-  `roompic` varchar(100) NOT NULL DEFAULT './images/rooms/default_room.jpg'
+  `roomname` varchar(10) NOT NULL,
+  `buildingid` int(11) NOT NULL,
+  `level` int(11) NOT NULL,
+  `capacity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `room`
 --
 
-INSERT INTO `room` (`roomid`, `roomname`, `roomdescription`, `roompic`) VALUES
-(1, 'Meeting room 1', 'Capacity: 30 persons', './images/rooms/11102017231446meeting_room1.jpg'),
-(2, 'Meeting room 2', 'Capacity: 50 persons', './images/rooms/default_room.jpg'),
-(3, 'werweqw', 'qweqweqwe', './images/rooms/12102017022336meeting_room3.jpg');
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `room`
+--
+ALTER TABLE `room`
+  ADD PRIMARY KEY (`roomid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `room`
+--
+ALTER TABLE `room`
+  MODIFY `roomid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+
 
 -- --------------------------------------------------------
 
@@ -137,11 +155,6 @@ ALTER TABLE `bookingrecord`
 ALTER TABLE `meeting`
   ADD PRIMARY KEY (`meetingid`);
 
---
--- Indexes for table `room`
---
-ALTER TABLE `room`
-  ADD PRIMARY KEY (`roomid`);
 
 --
 -- Indexes for table `slot`
@@ -179,3 +192,138 @@ ALTER TABLE `room`
 --
 ALTER TABLE `slot`
   MODIFY `slotid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+
+--
+-- Table structure for table `branch`
+--
+
+CREATE TABLE `branch` (
+  `branchid` int(2) NOT NULL,
+  `branchname` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `branch`
+--
+ALTER TABLE `branch`
+  ADD PRIMARY KEY (`branchid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `branch`
+--
+ALTER TABLE `branch`
+  MODIFY `branchid` int(2) NOT NULL AUTO_INCREMENT;
+
+--
+-- Table structure for table `building`
+--
+
+CREATE TABLE `building` (
+  `buildingid` int(2) NOT NULL,
+  `buildingname` varchar(20) NOT NULL,
+  `branchid` int(2) NOT NULL,
+  `nlevel` int(2) NOT NULL,
+  `address` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `building`
+--
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `building`
+--
+ALTER TABLE `building`
+  ADD PRIMARY KEY (`buildingid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `building`
+--
+ALTER TABLE `building`
+  MODIFY `buildingid` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Table structure for table `faculty`
+--
+
+CREATE TABLE `faculty` (
+  `facultyid` int(11) NOT NULL,
+  `facultyname` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `faculty`
+--
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `faculty`
+--
+ALTER TABLE `faculty`
+  ADD PRIMARY KEY (`facultyid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `faculty`
+--
+ALTER TABLE `faculty`
+  MODIFY `facultyid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Table structure for table `restriction`
+--
+
+CREATE TABLE `restriction` (
+  `roomid` int(11) NOT NULL,
+  `facultyid` int(11) NOT NULL,
+  `restrictionid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `restriction`
+--
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `restriction`
+--
+ALTER TABLE `restriction`
+  ADD PRIMARY KEY (`restrictionid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `restriction`
+--
+ALTER TABLE `restriction`
+  MODIFY `restrictionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+
