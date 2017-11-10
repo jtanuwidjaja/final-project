@@ -12,7 +12,7 @@
     <?php include("./includes/navi_bar.php")?>	
     <div class="container">
         <div class="row">
-        <div id='calendar'></div>-->
+        <div id='calendar'></div>
         <div class="modal fade" id="editevent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

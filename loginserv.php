@@ -24,21 +24,21 @@ if(isset($_POST['submit'])){
         {
             //Define $user and $pass
             $user=$_POST['user'];
-            $pass=$_POST['pass'];
-            //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-            $conn = mysqli_connect("localhost", "root", "root");
-            //Selecting Database
-            $db = mysqli_select_db($conn, "MRBS");
-            //sql query to fetch information of registerd user and finds user match.
-            $query = mysqli_query($conn, "SELECT * FROM user WHERE password='$pass' AND userid='$user' AND status = 1");
+            $pass=md5($_POST['pass']);
+            
+            
+            //Connection to the database
+            include("./includes/DB_connection.php");
+            
+            $query = mysqli_query($conn, "SELECT * FROM user WHERE password='$pass' AND login='$user' AND status = 1");
             $rows = mysqli_num_rows($query);
 
             if($rows == 1){   
                 
                 $row = $query->fetch_assoc();
-                $_SESSION["name"] = $row["username"];
+                $_SESSION["name"] = $row["first_name"].' '.$row["last_name"];
                 $_SESSION["role"] = $row["role"];
-                $_SESSION["userid"] = $row["userid"];
+                $_SESSION["login"] = $row["login"];
                 header("Location: index.php"); 
                    
             }
