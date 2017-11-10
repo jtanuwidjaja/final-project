@@ -1,16 +1,14 @@
-<?php  
+<?php
+    include("loginserv.php");
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
+        header("location: index.php");
+    }
+    include("./includes/DB_queries.php");
+    
     $id = $_POST["id"];
     
-    //Connection to the database
-    include("./includes/DB_connection.php");
-
-    $query = mysqli_query($conn, "
-        SELECT *
-        FROM bookingrecord 
-        JOIN room ON room.roomid = bookingrecord.roomid 
-        JOIN building ON building.buildingid = room.buildingid
-        JOIN branch ON branch.branchid = building.branchid
-        WHERE bookingid = '$id'");
+    
+    $query = select_booking($id);
 
     $row = mysqli_fetch_array($query);
 
@@ -34,21 +32,27 @@
         $end_repeat = $end_repeatDB[8].$end_repeatDB[9].'/'.$end_repeatDB[5].$end_repeatDB[6].'/'.$end_repeatDB[0].$end_repeatDB[1].$end_repeatDB[2].$end_repeatDB[3];;
     }
     $classname = $row['classname'];
-    //$tutor = $row['tutor'];
-    
-    $campusquery = mysqli_query($conn, 
-       "SELECT * FROM branch");
-    
-    $facultyquery = mysqli_query($conn, 
-       "SELECT * FROM faculty");
+    $tutor = $row['tutor'];
 
-    $roomquery = mysqli_query($conn, 
-       "SELECT * FROM room");
+
+
+    $tutorquery = get_tutor_list($faculty,$branch);
+    
+    $campusquery = get_branch_list();
+    
+    $facultyquery = get_faculty_list();
+
+    $roomquery = get_room_list();
     
     //Waiting when book but will be clicked
     if(isset($_POST['save'])){
+        
+        
+        $userid = $_SESSION['login'];
+        
         //Receiving parameters from bookinginfo.php page
         $id = $_POST['bookingid'];
+        
         $roomid = $_POST['room'];
         $date = $_POST['date'];
         $dateDB = $date[6].$date[7].$date[8].$date[9].'-'.$date[3].$date[4].'-'.$date[0].$date[1];
@@ -61,7 +65,7 @@
         $repeat = $_POST['repeat'];
         $end_repeat = $_POST['end_repeat'];
         $end_repeatDB = $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
-        
+        $tutor = $_POST['tutor'];
         
         if ($repeat > 0) {
         //Defining last repeat date for query
@@ -75,50 +79,24 @@
     }
     else {
         $last_repeat = $dateDB;
-        $end_repeat = $dateDB;
+        $end_repeatDB = $dateDB;
     }
         
         //check, that room with selected criteria is available 
-        $query = mysqli_query($conn, 
-        "SELECT * FROM room 
-        JOIN building ON room.buildingid=building.buildingid
-        LEFT JOIN restriction ON room.roomid=restriction.roomid
-        WHERE
-        room.roomid = '$roomid' AND
-        room.capacity >= '$capacity' AND
-        building.branchid = '$branch' AND
-        (restriction.facultyid = '$faculty' OR restriction.facultyid IS NULL) AND
-        room.roomid NOT IN 
-        (
-            SELECT DISTINCT roomid FROM bookingrecord 
-			WHERE
-            (
-                DATEDIFF(bookingdate, '$last_repeat') <= 0 AND 
-                (
-                    DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),bookingrepeat)) DAY)
-                             , '$dateDB') >= 0 OR
-                    DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),bookingrepeat)) DAY)
-                             , '$dateDB') IS NULL
-                )
-    		) AND
-            (
-        		MOD(DATEDIFF(bookingdate, '$dateDB'),LEAST(bookingrepeat,$repeat)) = 0 OR MOD(DATEDIFF('$dateDB', bookingdate),LEAST(bookingrepeat,$repeat)) is NULL
-    		) AND  
-    		time_start < '$time_end' AND time_end > '$time_start'
-            AND room.roomid <> $roomid
-        )");
+       $query = check_room_availability($id,$roomid,$capacity,$branch,$faculty,$dateDB,$repeat,$last_repeat,$time_start,$time_end);
         
         $rows = mysqli_num_rows($query);
         
         //If classroom is available, then create booking record.
         if($rows == 1){
-            $query = mysqli_query($conn, 
-            "UPDATE bookingrecord SET bookingdate = '$dateDB', time_start = '$time_start', time_end = '$time_end', roomid = '$roomid', userid = '1', facultyid = '$faculty', classname = '$classname', capacity = '$capacity', bookingrepeat = '$repeat', end_repeat = '$end_repeatDB'  WHERE bookingid = '$id'");
+            
+            $query = update_booking($dateDB,$time_start,$time_end,$roomid,$userid,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor,$id);
             
             header("Location: calendar.php");
         }
         else {
             $error = "Classroom can't be booked. Please, change booking parameters.";
+            
         }
         
     }
@@ -148,132 +126,12 @@
                 <h1 class="page-header">Booking information
 <!--                    <small>We are always ready to help you</small>-->
                 </h1>
-                <p>Complete booking information</p>
+                <p>Change booking information</p>
             </div>
        </div>
-        <form action="" method="post" onchange="checkform()" role="form">
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label >Room</label>
-                    <select class="form-control" name="room">
-                        <?php 
-                            while($row = mysqli_fetch_array($roomquery)){
-                                
-                                echo '<option value="'.$row["roomid"].'"';
-                                if ($row["roomid"] == $roomid) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$row["roomname"].'</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label >Campus</label>
-                    <select class="form-control" name="campus">
-                        <?php 
-                            while($row = mysqli_fetch_array($campusquery)){
-                                
-                                echo '<option value="'.$row["branchid"].'"';
-                                if ($row["branchid"] == $branch) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$row["branchname"].'</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="row"> 
-                <div class="form-group col-lg-4 col-md-4">
-                    <label >Date</label>
-                    <div class='input-group date datepicker'>
-                       <input type='text' class="form-control rq" name="date" <?php echo 'value='.$date; ?>/>
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-               </div>
-                <div class="form-group col-lg-4">
-                    <label >Time from</label>
-                    <div class='input-group date' id="timepickerfrom">
-                        <input type='text' class="form-control rq" name="time_start" <?php echo 'value="'.$time_start.'"'; ?>/>
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                        </span>
-                    </div>
-               </div>
-                <div class="form-group col-lg-4">
-                    <label >Time to</label>
-                    <div class='input-group date' id="timepickerto">
-                    <input type='text' class="form-control rq" name="time_end" <?php echo 'value="'.$time_end.'"'; ?>/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label >Repeat</label>
-                    <select class="form-control" name="repeat" id="repeat">
-                        <option value="0" <?php if($repeat == 0) echo 'selected';?>>Never</option>
-                        <option value="1" <?php if($repeat == 1) echo 'selected';?>>Every Day</option>
-                        <option value="7" <?php if($repeat == 7) echo 'selected';?>>Every Week</option>
-                        <option value="14" <?php if($repeat == 14) echo 'selected';?>>Every Fortnight</option>
-                    </select>
-                </div>
-                <div class="form-group col-lg-4 col-md-4">
-                    <label >End Repeat</label>
-                    <div class='input-group date datepicker'>
-                       <input type='text' class="form-control" name="end_repeat" id="end_repeat" <?php echo 'value="'.$end_repeat.'"'; ?>>
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-               </div>
-            </div>
-            
-            <div class="row">
-                <div class="form-group col-lg-4">
-                    <label >Faculty</label>
-                    <select class="form-control" name="faculty">
-                        <?php 
-                            while($row = mysqli_fetch_array($facultyquery)){
-                                echo '<option value="'.$row["facultyid"].'"';
-                                if ($row["facultyid"] == $faculty) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$row["facultyname"].'</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-12">
-                    <label >Class Name</label>
-                    <input type="text" class="form-control rq" id="userid" name="classname" placeholder="Enter class name" <?php echo 'value="'.$classname.'"';?>>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-lg-2">
-                    <div class="input-group spinner">
-                        <label >Enrolments</label>
-                        <div class="input-group spinner">
-                            <input type="text" class="form-control rq" <?php echo 'value="'.$capacity.'"';?> name="capacity">
-                            <div class="input-group-btn-vertical">
-                                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-                                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-lg-4">
-                    <label >Trainer</label>
-                    <input type="text" class="form-control rq" name="tutor" placeholder="Enter tutor name">
-                </div>
-            </div>
+        <form action="" method="post" onchange="checkform()" role="form" class="check_rq_fields">
+<!--        All fields for booking record card-->
+            <?php include("booking_fields.php")?>	
             
             <input type="text" name="bookingid" hidden="hidden" <?php echo 'value='.$id;?>>
             
@@ -298,9 +156,17 @@
     
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="js/site.js" type="text/javascript"></script>
     
     <script src="js/booking.js" type="text/javascript">
+    </script>
+    
+    <script>
+        <?php if ($_SESSION["role"] != "0") echo "
+        $('#role option:not(:selected)').prop('disabled', true);
+        $('#status option:not(:selected)').prop('disabled', true);
+        $('#campus option:not(:selected)').prop('disabled', true);
+        $('#faculty option:not(:selected)').prop('disabled', true);
+        ";?>
     </script>
     
 
