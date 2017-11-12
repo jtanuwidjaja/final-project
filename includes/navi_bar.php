@@ -29,7 +29,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Booking<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="booking.php">Book room</a></li>';}
-                if (($_SESSION["role"] == "1")||($_SESSION["role"] == "0")){
+                if (($_SESSION["role"] == "staff")||($_SESSION["role"] == "administrator")){
             echo '
                 <li><a href="booking_list.php">Booking list</a></li>'; }
                 if (isset ($_SESSION["role"])) { echo '                 
@@ -37,7 +37,7 @@
                 <li><a href="cancel_booking.php">Cancel booking</a></li>
               </ul>
             </li>'; } ?>
-            <?php if ($_SESSION["role"] == "0"){
+            <?php if ($_SESSION["role"] == "administrator"){
             echo '
             '; } ?>
             
@@ -46,7 +46,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <?php if (isset($_SESSION["name"])) { echo '
-            <li><a href="userinfo.php?ID='.$_SESSION["login"].'">'.$_SESSION["name"].'</a></li>
+            <li><a href="userinfo.php?ID='.$_SESSION["userid"].'">'.$_SESSION["name"].'</a></li>
             <li><a href="index.php?logout=1"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>'; }
             else {
                 echo '

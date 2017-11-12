@@ -1,16 +1,10 @@
 <?php 
 include("loginserv.php");
 //here I am checking for session expiry
-if ($_SESSION["role"] != "0") {
+if ($_SESSION["role"] != "administrator") {
 	//$_SESSION['msg'] = "You must log in first";
     header("location: login.php");
 }
-
-include("./includes/DB_queries.php");
-
-$query = get_user_list();
-
-mysqli_close($conn); // Closing connection
 
 ?>
 
@@ -20,7 +14,7 @@ mysqli_close($conn); // Closing connection
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>User list</title>
+	<title>User - MRBS</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
 <!--    <link href="css/style_old.css" rel="stylesheet">-->
@@ -36,8 +30,58 @@ mysqli_close($conn); // Closing connection
     
 </head>
 <body>
-<!--Navigation bar-->
-    <?php include("./includes/navi_bar.php")?>	   
+
+        <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.php"><img src="images/MRBSicon.png" width="100px" height="25px" alt="">
+          </a>
+
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="gallery.php">Gallery</a></li>
+            
+            <?php if (isset ($_SESSION["role"])) { echo '
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Booking<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="booking.php">Book room</a></li>';}
+                if (($_SESSION["role"] == "staff")||($_SESSION["role"] == "administrator")){
+            echo '
+                <li><a href="booking_list.php">Booking list</a></li>'; }
+                if (isset ($_SESSION["role"])) { echo '                 
+                <li role="separator" class="divider"></li>
+                <li><a href="cancel_booking.php">Cancel booking</a></li>
+              </ul>
+            </li>'; } ?>
+            <?php if ($_SESSION["role"] == "administrator"){
+            echo '
+            <li class="active"><a href="user.php">User List</a></li>'; } ?>
+            
+                                                                                                
+            <li><a href="contact.php">Contact us</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <?php if (isset($_SESSION["name"])) { echo '
+            <li><a href="userinfo.php?ID='.$_SESSION["userid"].'">'.$_SESSION["name"].'</a></li>
+            <li><a href="index.php?logout=1"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>'; }
+            else {
+                echo '
+            <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a href="registration.php"><span class="glyphicon glyphicon-user"></span> Register</a></li>'; }?>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
     
 <div class="container">
     <div class="row">
@@ -45,11 +89,10 @@ mysqli_close($conn); // Closing connection
                 <h1 class="page-header">User list
 <!--                    <small>We are always ready to help you</small>-->
                 </h1>
-                <p>Manatain user profiles and create new one. Only Superuser can create user with Superuser or Administrator role</p>
+                <p>Manatain user profiles and create new one. Only Administrator can create user with Administrator or Staff role</p>
             </div>
     </div>
        
-<<<<<<< HEAD
        
     <?php
     include("includes/DB_connection.php");
@@ -76,54 +119,22 @@ mysqli_close($conn); // Closing connection
                 </thead>
                 <tbody>';
     while($row = mysqli_fetch_array($query)){   //Creates a loop to loop through results            
-=======
-    <table id="usertable" class="table table-striped table-bordered" cellspacing="0" width="100%"> 
-        <thead>
-            <tr>
-                <th>Login</th>
-                <th>First name</th>
-                <th>Last name</th>                   <th>Role</th>
-                <th>Status</th>
-                <th>Gender</th>
-                <th>Campus</th>
-                <th>Faculty</th>                   <th>Phone</th>
-                <th>Email</th>
-                <th>Control</th>             
-            </tr>
-        </thead>
-        <tbody> 
-    <?php                    
-    while($row = mysqli_fetch_array($query)){   //Creates a loop to loop through results        
->>>>>>> 7bb5958372c6c23df3c87bd85a986f237c9f7998
         echo '
                 <tr>
                     <td>
-                    '.$row["login"].'
+                    '.$row["userid"].'
                     </td>
                     <td>
-                    '.$row["first_name"].'
+                    '.$row["password"].'
                     </td>
                     <td>
-                    '.$row["last_name"].'
+                    '.$row["username"].'
                     </td>
+                    <td>
+                    '.$row["role"].'
+                    </td>
+                    
                     ';
-        switch ($row["role"]) {
-            case 0: echo '
-                    <td>
-                    Superuser
-                    </td>';
-                    break;
-            case 1: echo '
-                    <td>
-                    Administrator
-                    </td>';
-                    break;
-            case 2: echo '
-                    <td>
-                    Tutor
-                    </td>';
-                    break;
-        }
         if ($row["status"] == 0){  
                         echo '
                         <td style="text-align: center;">
@@ -136,25 +147,12 @@ mysqli_close($conn); // Closing connection
                             <span class="glyphicon glyphicon-off" style="color: green;"></span>
                         </td>';
         }
-        if ($row["gender"] == 1) {
-            echo '
-                    <td>
-                    Male
-                    </td>';
-        }
-        else{
-            echo '
-                    <td>
-                    Female
-                    </td>';
-        }
-        
         echo '
                     <td>
-                    '.$row["branchname"].'
+                    '.$row["gender"].'
                     </td>
                     <td>
-                    '.$row["facultyname"].'
+                    '.$row["age"].'
                     </td>
                     <td>
                     '.$row["phone"].'
@@ -164,34 +162,66 @@ mysqli_close($conn); // Closing connection
                     </td>
                             
                     <td style="width:60px; text-align: center;">
-                        <a href="userinfo.php?ID='.$row["login"].'&return=1"><span class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="delete_user.php?ID='.$row["login"].'"><span class="glyphicon glyphicon-trash"></span></a>
+                        <a href="userinfo.php?ID='.$row["userid"].'"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="delete_user.php?ID='.$row["userid"].'"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>';
             
     }
+    echo "</tbody></table></form>"; //Close the table in HTML
+    echo '<p><a href="registration.php">Create new user</a></p>';
+    mysqli_close($conn); // Closing connection
     ?>
-        </tbody>
-    </table>
-    <p><a href="registration.php">Create new user</a></p>
       
 </div>
     
-    <!--Footer-->
-    <?php include("./includes/footer.php");?>
-<!--Java Script   -->
-<!--JQuery-->
-<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
-<!--Datatables-->
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"> </script>
-<!--Bootstrap main -->
-<script src="js/bootstrap.min.js"></script>
-<script>
-    $(function() {
-       $('#usertable').DataTable(); 
-    });
-</script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"> </script>
+    
+    <script> 
+        
+        $(document).ready(function() {
+            $('#usertable').DataTable();
+        } );
+    
+    
+    </script>
+      
+<!--    <script src="js/site.js" type="text/javascript"></script> -->
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+-->
+<!--     IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>	-->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <footer id="myFooter">
+        
+        <br>
+        <div class="text-center">
+        <p>Find us in social networks<p>
+        <a onclick="" class="btn btn-social-icon btn-lg btn-facebook"><i class="fa fa-facebook"></i></a>
+        <a onclick="" class="btn btn-social-icon btn-lg btn-instagram"><i class="fa fa-instagram"></i></a>
+        <a onclick="" class="btn btn-social-icon btn-lg btn-linkedin"><i class="fa fa-linkedin"></i></a>
+    </div>
+        <div class="footer-copyright">
+            <p>© 2017 Copyright Andrey Dementyev</p>
+        </div>
+        
+        
+    </footer>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
     
 </body>
 </html>

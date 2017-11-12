@@ -24,27 +24,17 @@ if(isset($_POST['submit'])){
         {
             //Define $user and $pass
             $user=$_POST['user'];
-<<<<<<< HEAD
             $pass=$_POST['pass'];
             include("includes/DB_connection.php");
             $query = mysqli_query($conn, "SELECT * FROM user WHERE password='$pass' AND userid='$user' AND status = 1");
-=======
-            $pass=md5($_POST['pass']);
-            
-            
-            //Connection to the database
-            include("./includes/DB_connection.php");
-            
-            $query = mysqli_query($conn, "SELECT * FROM user WHERE password='$pass' AND login='$user' AND status = 1");
->>>>>>> 7bb5958372c6c23df3c87bd85a986f237c9f7998
             $rows = mysqli_num_rows($query);
 
             if($rows == 1){   
                 
                 $row = $query->fetch_assoc();
-                $_SESSION["name"] = $row["first_name"].' '.$row["last_name"];
+                $_SESSION["name"] = $row["username"];
                 $_SESSION["role"] = $row["role"];
-                $_SESSION["login"] = $row["login"];
+                $_SESSION["userid"] = $row["userid"];
                 header("Location: index.php"); 
                    
             }

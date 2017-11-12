@@ -1,8 +1,6 @@
 <?php
     include("loginserv.php");
-    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
-        header("location: index.php");
-    }
+    //include("select_param.php");
 
     //Connection to the database
     include("./includes/DB_connection.php");
@@ -14,16 +12,12 @@
     $facultyquery = mysqli_query($conn, 
        "SELECT * FROM faculty");
     
-    //searching branch for administrators of faculties
-    if ($_SESSION["role"] == 1) {
-        $userid = $_SESSION['login'];
-        $userbrachquery = mysqli_query($conn, 
-       "SELECT branchid, facultyid FROM user WHERE login = '$userid'");
-        $rows = mysqli_fetch_array($userbrachquery);
-        $branch = $rows["branchid"];
-        $faculty = $rows["facultyid"];
-    }
-    
+    //searching branch for registred user
+//    $userid = $_SESSION['userid'];
+//    $userbrachquery = mysqli_query($conn, 
+//       "SELECT branchid FROM user WHERE userid = '$userid'");
+//    $rows = mysqli_num_rows($userbrachquery);
+//    $branch = $rows["branchid"];
     
 ?>
 
@@ -116,31 +110,21 @@
             </div>
             <div class="row">
                 <div class="form-group col-lg-4">
-                    <label >Campus</label>
-                    <select class="form-control" name="campus" id="campus" <?php if ($_SESSION["role"] != "0") echo 'readonly'?>>
+                    <label >Faculty</label>
+                    <select class="form-control" id="faculty" name="faculty">
                         <?php 
-                            while($row = mysqli_fetch_array($campusquery)){
-                                
-                                echo '<option value="'.$row["branchid"].'"';
-                                if ($row["branchid"] == $branch) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$row["branchname"].'</option>';
+                            while($row = mysqli_fetch_array($facultyquery)){
+                                echo '<option value="'.$row["facultyid"].'">'.$row["facultyname"].'</option>';
                             }
                         ?>
                     </select>
-                    
                 </div>
                 <div class="form-group col-lg-4">
-                    <label >Faculty</label>
-                    <select class="form-control" name="faculty" id="faculty" <?php if ($_SESSION["role"] != "0") echo 'readonly'?> >
+                    <label >Campus</label>
+                    <select class="form-control" id="campus" name="campus">
                         <?php 
-                            while($row = mysqli_fetch_array($facultyquery)){
-                                echo '<option value="'.$row["facultyid"].'"';
-                                if ($row["facultyid"] == $faculty) {
-                                    echo ' selected';
-                                }
-                                echo '>'.$row["facultyname"].'</option>';
+                            while($row = mysqli_fetch_array($campusquery)){
+                                echo '<option value="'.$row["branchid"].'">'.$row["branchname"].'</option>';
                             }
                         ?>
                     </select>
@@ -210,6 +194,9 @@
 <!--Bootstrap main -->
 <script src="js/bootstrap.min.js"></script>
     
+<!--Check form JS-->
+<script src="js/site.js" type="text/javascript"></script>
+    
 <script src="js/booking.js" type="text/javascript">
 </script>
 
@@ -244,12 +231,6 @@
             $('#selectionform').submit();
         }
         
-        <?php if ($_SESSION["role"] != "0") echo "
-        $('#role option:not(:selected)').prop('disabled', true);
-        $('#status option:not(:selected)').prop('disabled', true);
-        $('#campus option:not(:selected)').prop('disabled', true);
-        $('#faculty option:not(:selected)').prop('disabled', true);
-        ";?>
         
     </script>
         

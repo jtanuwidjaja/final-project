@@ -38,8 +38,13 @@
             SELECT DISTINCT roomid FROM bookingrecord 
 			WHERE
             (
-                DATEDIFF(bookingdate, '$last_repeat') <= 0 AND
-                DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),GREATEST(bookingrepeat,1))) DAY), '$dateDB') >= 0
+                DATEDIFF(bookingdate, '$last_repeat') <= 0 AND 
+                (
+                    DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),bookingrepeat)) DAY)
+                             , '$dateDB') >= 0 OR
+                    DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),bookingrepeat)) DAY)
+                             , '$dateDB') IS NULL
+                )
     		) AND
             (
         		MOD(DATEDIFF(bookingdate, '$dateDB'),LEAST(bookingrepeat,$repeat)) = 0 OR MOD(DATEDIFF('$dateDB', bookingdate),LEAST(bookingrepeat,$repeat)) is NULL
