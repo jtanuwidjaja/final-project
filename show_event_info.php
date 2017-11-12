@@ -1,20 +1,40 @@
-<?php  
+<?php
     include("loginserv.php");
     if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
         header("location: index.php");
     }
     include("./includes/DB_queries.php");
     
+    $id = $_POST["id"];
+    
+    
+    $query = select_booking($id);
+
+    $row = mysqli_fetch_array($query);
+
     //Receiving parameters from booking.php page
-    $roomid = $_POST["roomid"];
-    $date = $_POST["date"];
-    $time_start = date('H:i:s',strtotime($_POST['time_start']));
-    $time_end = date('H:i:s',strtotime($_POST['time_end'])); 
-    $branch = $_POST['campus'];
-    $faculty = $_POST['faculty'];
-    $capacity = $_POST['capacity'];
-    $repeat = $_POST['repeat'];
-    $end_repeat = $_POST['end_repeat'];
+    $roomid = $row['roomid'];
+    $dateDB = $row["bookingdate"];
+    $date = $dateDB[8].$dateDB[9].'/'.$dateDB[5].$dateDB[6].'/'.$dateDB[0].$dateDB[1].$dateDB[2].$dateDB[3];
+    $time_start = date('H:i:s',strtotime($row['time_start']));
+    $time_end = date('H:i:s',strtotime($row['time_end']));
+    
+    
+    $branch = $row['branchid'];
+    $faculty = $row['facultyid'];
+    $capacity = $row['capacity'];
+    $repeat = $row['bookingrepeat'];
+    if ($repeat == 0) {
+        $end_repeat = '';
+    }
+    else {
+        $end_repeatDB = $row['end_repeat'];
+        $end_repeat = $end_repeatDB[8].$end_repeatDB[9].'/'.$end_repeatDB[5].$end_repeatDB[6].'/'.$end_repeatDB[0].$end_repeatDB[1].$end_repeatDB[2].$end_repeatDB[3];;
+    }
+    $classname = $row['classname'];
+    $tutor = $row['tutor'];
+
+
 
     $tutorquery = get_tutor_list($faculty,$branch);
     
@@ -25,11 +45,13 @@
     $roomquery = get_room_list();
     
     //Waiting when book but will be clicked
-    if(isset($_POST['book'])){
+    if(isset($_POST['save'])){
+        
         
         $userid = $_SESSION['login'];
         
         //Receiving parameters from bookinginfo.php page
+        $id = $_POST['bookingid'];
         
         $roomid = $_POST['room'];
         $date = $_POST['date'];
@@ -44,7 +66,6 @@
         $end_repeat = $_POST['end_repeat'];
         $end_repeatDB = $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
         $tutor = $_POST['tutor'];
-        
         
         if ($repeat > 0) {
         //Defining last repeat date for query
@@ -62,18 +83,20 @@
     }
         
         //check, that room with selected criteria is available 
-        $query = check_room_availability(0,$roomid,$capacity,$branch,$faculty,$dateDB,$repeat,$last_repeat,$time_start,$time_end);
+       $query = check_room_availability($id,$roomid,$capacity,$branch,$faculty,$dateDB,$repeat,$last_repeat,$time_start,$time_end);
         
         $rows = mysqli_num_rows($query);
         
         //If classroom is available, then create booking record.
         if($rows == 1){
-            $query = insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor);
             
-            header("Location: index.php");
+            $query = update_booking($dateDB,$time_start,$time_end,$roomid,$userid,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor,$id);
+            
+            header("Location: calendar.php");
         }
         else {
             $error = "Classroom can't be booked. Please, change booking parameters.";
+            
         }
         
     }
@@ -95,25 +118,25 @@
     
 </head>
 <body>
-    
     <!--Navigation bar-->
     <?php include("./includes/navi_bar.php")?>	
-    
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Booking information
 <!--                    <small>We are always ready to help you</small>-->
                 </h1>
-                <p>Complete booking information</p>
+                <p>Change booking information</p>
             </div>
        </div>
         <form action="" method="post" onchange="checkform()" role="form" class="check_rq_fields">
 <!--        All fields for booking record card-->
-            <?php include("booking_fields.php")?>
+            <?php include("booking_fields.php")?>	
+            
+            <input type="text" name="bookingid" hidden="hidden" <?php echo 'value='.$id;?>>
             
             <div class="row col-lg-4">
-                <button type="submit" class="btn btn-primary" name="book" id="signup" disabled>Book</button>
+                <button type="submit" class="btn btn-primary" name="save" id="signup" disabled>Save</button>
             </div>
             <div class="row col-lg-4">
                 <label><?php echo $error; ?></label>
@@ -122,6 +145,7 @@
         
         
     </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     

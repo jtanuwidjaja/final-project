@@ -1,26 +1,43 @@
 <?php
     include("loginserv.php");
     include("edit_user.php");
-    
-    if ($_SESSION["role"] == "administrator") {
-        $userid = $_GET["ID"];
-    }
+    if (isset($_SESSION["login"])){
+        if ($_SESSION["role"] == "0") {
+            $userid = $_GET["ID"];
+        }
+        else {
+            $userid = $_SESSION["login"];
+        }
+    } 
     else {
-        $userid = $_SESSION["userid"];
+        header("location: login.php");
     }
+<<<<<<< HEAD
     
     include("includes/DB_connection.php");
     //sql query to fetch information of registerd user and finds user match.
     $query = mysqli_query($conn, "SELECT * FROM user WHERE userid='$userid'");
+=======
+        
+    include("./includes/DB_queries.php");
+
+    $query = mysqli_query($conn, "SELECT * FROM user WHERE login='$userid'");
+>>>>>>> 7bb5958372c6c23df3c87bd85a986f237c9f7998
     $row = $query->fetch_assoc();  
     $password=$row["password"];
-    $username=$row["username"];
+    $first_name=$row["first_name"];
+    $last_name=$row["last_name"];
     $role=$row["role"];
-    $age=$row["age"];
     $phone=$row["phone"];
     $email=$row["email"];
     $gender=$row["gender"];
-    $status=$row["status"];   
+    $branch=$row["branchid"];
+    $faculty=$row["facultyid"];
+    $status=$row["status"];
+    
+    $campusquery = get_branch_list();
+    
+    $facultyquery = get_faculty_list();
 
 ?>
 
@@ -31,7 +48,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Personal information - MRBS</title>
+	<title>User information</title>
     
     <link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
@@ -41,62 +58,9 @@
 </head>
 <body>
 	
-        <!-- Static navbar -->
-    <nav class="navbar navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.php"><img src="images/MRBSicon.png" width="100px" height="25px" alt="">
-          </a>
-
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="gallery.php">Gallery</a></li>
-            
-            <?php if (isset ($_SESSION["role"])) { echo '
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Booking<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="booking.php">Book room</a></li>';}
-                if (($_SESSION["role"] == "staff")||($_SESSION["role"] == "administrator")){
-            echo '
-                <li><a href="booking_list.php">Booking list</a></li>'; }
-                if (isset ($_SESSION["role"])) { echo '                 
-                <li role="separator" class="divider"></li>
-                <li><a href="cancel_booking.php">Cancel booking</a></li>
-              </ul>
-            </li>'; } ?>
-            <?php if ($_SESSION["role"] == "administrator"){
-            echo '
-            <li><a href="user.php">User List</a></li>'; } ?>
-            
-                                                                                                
-            <li><a href="contact.php">Contact us</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <?php if (isset($_SESSION["name"])) { echo '
-            <li class="active"><a href="userinfo.php?ID='.$_SESSION["userid"].'">'.$_SESSION["name"].'</a></li>
-            <li><a href="index.php?logout=1"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>'; }
-            else {
-                echo '
-            <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            <li><a href="registration.php"><span class="glyphicon glyphicon-user"></span> Register</a></li>'; }?>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+<?php include "includes/navi_bar.php";?>
     
-   
-       
-    
-        <div class="container"> 
+<div class="container"> 
        <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Personal information
@@ -106,68 +70,100 @@
             </div>
        </div>
        
-    
-        <form action="" method="post" onchange="checkform()" role="form">
+    <form action="" method="post" role="form" class="check_rq_fields">
            <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Username*</label>
+                    <label >Login*</label>
                     <input type="text" class="form-control rq" id="userid" name="userid" placeholder="Enter username" readonly <?php echo 'value='.$userid; ?>>
                 </div>
-                <div class="form-group col-lg-4" <?php if ($_SESSION["role"] != "administrator") echo 'style="display:none;"';?>>
+                <div class="form-group col-lg-4" <?php if ($_SESSION["role"] != "0") echo 'style="display:none;"';?>>
                     <label>Password*</label>
                     <input type="password" class="form-control rq"  id="passsword" name="password" placeholder="Enter password" <?php echo 'value='.$password; ?>>
                 </div>
-                <div class="form-group col-lg-4" <?php if ($_SESSION["role"] == "administrator") echo 'style="display:none;"';?>>
+                <div class="form-group col-lg-4" <?php if ($_SESSION["role"] == "0") echo 'style="display:none;"';?>>
                     <label>Password*</label>
                     <p><a href="changepass.php">Change password</a></p>
                 </div>
             </div>
             <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Full name*</label>
-                    <input type="text" class="form-control rq" id="username" name="username" placeholder="Enter your full name" <?php echo 'value='.$username; ?>>
+                    <label >First name*</label>
+                    <input type="text" class="form-control rq" id="first_name" name="first_name" placeholder="Enter your full name" <?php echo 'value="'.$first_name.'"'; ?>>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label >Last name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter your full name" <?php echo 'value="'.$last_name.'"'; ?>>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-4">
                     <label >Role</label>
-                    <select class="form-control" id="role" name="role" <?php if ($_SESSION["role"] != "administrator") echo 'readonly';?>>
-                        <option value="customer" <?php if ($role == "customer") echo 'selected'; ?>>Customer</option>
-                        <option value="staff" <?php if ($role == "staff") echo 'selected'; ?> >Staff</option>
-                        <option value="administrator" <?php if ($role == "administrator") echo 'selected'; ?>>Administrator</option>
+                    <select class="form-control" id="role" name="role" <?php if ($_SESSION["role"] != "0") echo 'readonly'?>>
+                        <option value="2" <?php if ($role == "2") echo 'selected'; ?>>Tutor</option>
+                        <option value="1" <?php if ($role == "1") echo 'selected'; ?> >Administrator</option>
+                        <option value="0" <?php if ($role == "0") echo 'selected'; ?>>Superuser</option>
                     </select>
                 </div>
                 <div class="form-group col-lg-4">
                     <label >Status</label>
-                    <select class="form-control" id="status" name="status" <?php if ($_SESSION["role"] != "administrator") echo 'readonly';?>>
+                    <select class="form-control" id="status" name="status" <?php if ($_SESSION["role"] != "0") echo 'readonly';?>>
                         <option value="1" <?php if ($status == 1) echo 'selected'; ?>>Enable</option>
                         <option value="0" <?php if ($status == 0) echo 'selected'; ?>>Disable</option>
                     </select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" id="campus_faculty">
                 <div class="form-group col-lg-4">
-                    <label >Age</label>
-                    <input type="text" class="form-control" id="age" name="age" placeholder="Enter your age" <?php echo 'value='.$age; ?>>
+                    <label >Campus</label>
+                    <select class="form-control" name="campus" id="campus" <?php if ($_SESSION["role"] != "0") echo 'readonly'?>>
+                        <?php 
+                            while($row = mysqli_fetch_array($campusquery)){
+                                
+                                echo '<option value="'.$row["branchid"].'"';
+                                if ($row["branchid"] == $branch) {
+                                    echo ' selected';
+                                }
+                                echo '>'.$row["branchname"].'</option>';
+                            }
+                        ?>
+                    </select>
+                    
                 </div>
                 <div class="form-group col-lg-4">
-                    <label >Gender*</label>
+                    <label >Faculty</label>
+                    <select class="form-control" name="faculty" id="faculty" <?php if ($_SESSION["role"] != "0") echo 'readonly'?> >
+                        <?php 
+                            while($row = mysqli_fetch_array($facultyquery)){
+                                echo '<option value="'.$row["facultyid"].'"';
+                                if ($row["facultyid"] == $faculty) {
+                                    echo ' selected';
+                                }
+                                echo '>'.$row["facultyname"].'</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label >Gender</label>
                     <select class="form-control" id="gender" name="gender">
-                        <option value="male" <?php if ($gender == "male") echo 'selected'; ?>>Male</option>
-                        <option value="female" <?php if ($gender == "female") echo 'selected'; ?>>Female</option>
+                        <option value="1" <?php if ($gender == "1") echo 'selected'; ?>>Male</option>
+                        <option value="0" <?php if ($gender == "0") echo 'selected'; ?>>Female</option>
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-4">
                     <label >Phone*</label>
-                    <input type="text" class="form-control rq" id="phone" name="phone" placeholder="Enter phonenumber" pattern='0{1}[0-9]{9}' <?php echo 'value='.$phone; ?>>
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phonenumber" pattern='0{1}[0-9]{9}' <?php echo 'value='.$phone; ?>>
                 </div>
                 <div class="form-group col-lg-4">
                     <label >Email*</label>
                     <input type="email" class="form-control rq" id="email" name="email" placeholder="Enter username" <?php echo 'value='.$email; ?>>
                 </div>
             </div>
+            <input type="text" name="return" hidden <?php echo 'value='.$_GET['return'];?>>
             <div class="row col-lg-4">
                 <button type="submit" class="btn btn-primary" name="save" id="signup" disabled>Save</button>
             </div>
@@ -176,40 +172,53 @@
                     <br><br>
                     <span style="color:red;font-size=20px;"><?php echo $error; ?></span>
         </form>
-       </div>    
         
-  <br><br><br><br><br><br><br><br><br><br><br>
-    <footer id="myFooter">
-        
-        <br>
-        <div class="text-center">
-        <p>Find us in social networks<p>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-facebook"><i class="fa fa-facebook"></i></a>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-instagram"><i class="fa fa-instagram"></i></a>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-linkedin"><i class="fa fa-linkedin"></i></a>
-    </div>
-        <div class="footer-copyright">
-            <p>© 2017 Copyright Andrey Dementyev</p>
-        </div>
-        
-        
-    </footer>
+</div>    
+<!--Footer-->
+<?php include("./includes/footer.php");?>
+<!--Java Script   -->
+<!--JQuery-->
+<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
+
+<!--Bootstrap main -->
+<script src="js/bootstrap.min.js"></script>
     
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>    
-      
-    <script src="js/site.js" type="text/javascript"></script> 
+
+<script>
+    $(function () {
+        
+        $('.check_rq_fields').on("click change", function() {
+            var f = $(".rq");
+            var cansubmit = true;
+            for (var i = 0; i < f.length; i++) {
+                if (f[i].value.length == 0) cansubmit = false;
+            }
+            $('#signup').prop('disabled', !cansubmit);
+        });
+        if ($('#role').val() == 0) {
+            $('#campus').prop('disabled', true);
+            $('#faculty').prop('disabled', true);
+            $('#campus_faculty').prop('hidden', true);
+        }
+        $("#role").change(function(){
+            var hide = false;
+            if ($('#role').val() == 0) hide = true;
+                
+            $('#campus').prop('disabled', hide);
+            $('#faculty').prop('disabled', hide);
+            $('#campus_faculty').prop('hidden', hide);      
+        }
+        );
+        
+    });
     
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>	
+    <?php if ($_SESSION["role"] != "0") echo "
+        $('#role option:not(:selected)').prop('disabled', true);
+        $('#status option:not(:selected)').prop('disabled', true);
+        $('#campus option:not(:selected)').prop('disabled', true);
+        $('#faculty option:not(:selected)').prop('disabled', true);
+        ";?>
+</script>
     
 </body>
 </html>

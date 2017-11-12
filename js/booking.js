@@ -58,8 +58,23 @@ $(function () {
             $('#signup').prop('disabled', !cansubmit);
         });
         
+        if ($('#tutor').val() != '') {
+                var phone = $('#tutor option:selected').attr('phone');
+                var email = $('#tutor option:selected').attr('email');
+
+                $('#phone').val(phone);
+                $('#email').val(email);
+            }
+            $("#tutor").change(function(){
+                var phone = $('option:selected', this).attr('phone');
+                var email = $('option:selected', this).attr('email');
+
+                $('#phone').val(phone);
+                $('#email').val(email);
+            });
         
-    
+           
 });
+
     
     
