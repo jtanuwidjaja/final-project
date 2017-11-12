@@ -25,11 +25,7 @@ if(isset($_POST['submit'])){
             //Define $user and $pass
             $user=$_POST['user'];
             $pass=$_POST['pass'];
-            //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-            $conn = mysqli_connect("localhost", "root", "root");
-            //Selecting Database
-            $db = mysqli_select_db($conn, "MRBS");
-            //sql query to fetch information of registerd user and finds user match.
+            include("includes/DB_connection.php");
             $query = mysqli_query($conn, "SELECT * FROM user WHERE password='$pass' AND userid='$user' AND status = 1");
             $rows = mysqli_num_rows($query);
 

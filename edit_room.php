@@ -8,9 +8,7 @@
 
     
     //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-    $conn = mysqli_connect("localhost", "root", "root");
-    //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
+    include("includes/DB_connection.php");
     //sql query to fetch information of registerd user and finds user match.
     
     if(($_FILES['fileToUpload']['name'])&&(!$_FILES['fileToUpload']['error'])){  

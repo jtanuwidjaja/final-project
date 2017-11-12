@@ -48,9 +48,7 @@ if ($_SESSION["role"] != "administrator") {
        
     <?php
    
-    $conn = mysqli_connect("localhost", "root", "root");
-    //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
+    include("includes/DB_connection.php");
     //sql query to fetch information of registerd user and finds user match.
     $query = mysqli_query($conn, "SELECT * FROM branch LEFT JOIN building ON branch.branchid=building.branchid LEFT JOIN room ON building.buildingid=room.buildingid ORDER BY building.buildingname ASC, room.level ASC, room.roomname ASC, room.capacity ASC;"
 

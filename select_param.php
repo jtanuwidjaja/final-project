@@ -16,11 +16,7 @@ if(isset($_POST['step1'])){
     $artist = array();
     
         
-        //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-        $conn = mysqli_connect("localhost", "root", "root");
-        //Selecting Database
-        $db = mysqli_select_db($conn, "MRBS");
-        //sql query to fetch information of registerd user and finds user match.
+        include("includes/DB_connection.php");
         $query = mysqli_query($conn, "SELECT room.roomid FROM room LEFT JOIN bookingrecord ON room.roomid=bookingrecord.roomid GROUP BY room.roomid HAVING COUNT(IF(bookingrecord.date = '$date',1,NULL))<9");
     
     while ($row = $query->fetch_assoc()) {
@@ -48,9 +44,7 @@ if(isset($_POST['step2'])) {
     $d = $_SESSION['date'];
     
     //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-    $conn = mysqli_connect("localhost", "root", "root");
-        //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
+    include("includes/DB_connection.php");
         //sql query to fetch information of registerd user and finds user match.
     
     $query = mysqli_query($conn, "SELECT slotid FROM bookingrecord WHERE roomid='$artist_id' AND date='$d'");

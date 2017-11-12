@@ -2,12 +2,7 @@
     $error="";
     $name=$_POST['roomname'];
     $description=$_POST['roomdescription'];
-
-    
-    //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-    $conn = mysqli_connect("localhost", "root", "root");
-    //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
+    include("includes/DB_connection.php");
     
 
     //---upload photo----------------------------------
