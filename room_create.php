@@ -25,7 +25,7 @@
 </head>
 
 <body>
-	<?php include "includes/navigation_bar.php";?>
+	<?php include "includes/navi_bar.php";?>
    <div class="container"> 
        <div class="row">
             <div class="col-lg-12">
