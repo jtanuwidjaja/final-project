@@ -33,7 +33,7 @@ if ($_SESSION["role"] != "administrator") {
 
 <body>
   
-<?php include "includes/navigation_bar.php";?>
+<?php include "includes/navi_bar.php";?>
     
 <div class="container">
     <div class="row">
@@ -110,6 +110,7 @@ if ($_SESSION["role"] != "administrator") {
     ?>
       
 </div>
+
     
     <script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
@@ -145,7 +146,7 @@ if ($_SESSION["role"] != "administrator") {
    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
   <!--  <script src="js/bootstrap.min.js"></script> -->
-   <br><br><br><br><br><br><br><br><br><br><br><br><br>
+   <br><br><br><br><br><br>
     <?php include "includes/footer.php";?>
 </body>
 </html>

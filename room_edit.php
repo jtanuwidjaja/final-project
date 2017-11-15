@@ -11,10 +11,11 @@
     
     include ("includes/DB_connection.php");
     //sql query to fetch information of registerd user and finds user match.
-    $query = mysqli_query($conn, "SELECT * FROM branch LEFT JOIN building ON branch.branchid=building.branchid LEFT JOIN room ON building.buildingid=room.buildingid where roomid='$roomid';");
-    $row = $query->fetcroom_assoc();
+    $query = mysqli_query($conn, "SELECT * FROM branch LEFT JOIN building ON branch.branchid=building.branchid LEFT JOIN room ON building.buildingid=room.buildingid WHERE roomid='$roomid';");
+    $row = $query->fetch_assoc();
     $branchname=$row["branchname"];
     $buildingname = $row["buildingname"];
+    $buildingid = $row["buildingid"];
     $address = $row["address"];
     $roomname = $row["roomname"];
     $capacity = $row["capacity"];
@@ -42,7 +43,7 @@
       <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-   <?php include "includes/navigation_bar.php";?>
+   <?php include "includes/navi_bar.php";?>
      <div class="container"> 
        <div class="row">
             <div class="col-lg-12">
@@ -72,33 +73,58 @@
                 <div class="form-group col-lg-2">
                  <label for="ex2">Select Branch</label>
                          <select class="form-control" id="branchdd" name="branch" onchange="change_branch()">
-                              <option value="<?php echo $branchid?>"><?php echo $branchname?></option>
+                              <option>Select</option>
                               <?php 
                               $res=mysqli_query($conn,"SELECT * FROM branch");
                               while($row=mysqli_fetch_array($res))
                               {
-                                ?>
-                                <option value="<?php echo $row["branchid"]; ?>"><?php echo $row["branchname"]?></option>
-                              <?php  
+                                echo '<option value="'.$row["branchid"].'"';
+                                if ($row["branchid"] == $branchid){
+                                  echo 'selected';
+                                }
+                                echo '>'.$row["branchname"].'</option>';
                               }
-                              ?>  
-
                               ?>
                             </select>
                            </div>
 
             <div class="col-xs-2" id="tower">
                    <label for="ex2">Choose Tower*</label>
-                         <select class="form-control">
+                         <select class="form-control" name="towerdd">
                 <option>Select</option>
+                <?php 
+                              $res=mysqli_query($conn,"SELECT * FROM building LEFT JOIN branch ON branch.branchid=building.branchid");
+                              while($row=mysqli_fetch_array($res))
+                              {
+                                echo '<option value="'.$row["buildingid"].'"';
+                                if ($row["buildingid"] == $buildingid){
+                                  echo 'selected';
+                                } 
+                                echo '>'.$row["buildingname"].'</option>';
+                              }
+                              ?>
             </select>  
             </div>
 
 
             <div class="col-xs-2" id="level"">
                    <label for="ex2">Choose Level*</label>
-                         <select class="form-control">
+                         <select class="form-control" name="leveldd">
                 <option>Select</option>
+                <?php 
+                      $res=mysqli_query($conn,"SELECT * FROM branch LEFT JOIN building ON branch.branchid=building.branchid LEFT JOIN room ON building.buildingid=room.buildingid WHERE roomid='$roomid'");
+                      $row=mysqli_fetch_array($res);
+                      $nlevel = $row['nlevel'];
+                      print_r($row['nlevel']);
+                      for($i=0; $i<=$nlevel; $i++)
+                      {
+                      echo '<option value="'.$i.'"';
+                                if ($i == $level){
+                                  echo 'selected';
+                                }
+                                echo '>'.$i.'</option>';
+                      }
+                  ?>
             </select>  
             </div>
 
@@ -107,7 +133,7 @@
                     <div class="input-group spinner">
                         <label >Capacity</label>
                         <div class="input-group spinner">
-                            <input type="text" class="form-control" name="capacity" value="12" id="capacity">
+                            <input type="text" class="form-control" name="capacity"  id="capacity"<?php echo 'value='.$capacity; ?>>
                             <div class="input-group-btn-vertical">
                                 <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
                                 <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
@@ -115,10 +141,13 @@
                         </div>
                     </div>
                 </div>
-
-         <div class="row col-lg-4">
+        <div class="row"> 
+              <div class="form-group col-lg-4">
                 <button type="submit" class="btn btn-primary" name="save" id="signup">Save</button>
+              </div>
             </div>
+            
+      
 
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -126,7 +155,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>     
     <script src="js/site.js" type="text/javascript"></script> 
-    <script src="js/forspinner.js" type="text/javascript"></script>
     <script src="js/spinner.js" type="text/javascript"></script> 
     
     <!-- Bootstrap core JavaScript
@@ -153,10 +181,6 @@
           {
             document.getElementById("level").innerHTML="<label for='ex2'>Choose Level*</label><select class='form-control'><option>Select</option></select>"
           }
-
-
-
-
         }
 
         function change_tower()
@@ -168,6 +192,7 @@
           document.getElementById("level").innerHTML=xmlhttp.responseText;  
         }
         </script>
+       
 </body>
 
 </html>

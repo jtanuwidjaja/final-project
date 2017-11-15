@@ -11,20 +11,19 @@
 
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Registration - MRBS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration - MRBS</title>
     <script src="js/site.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="css/forspinner.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
+  <link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
     
-	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/spinner.css">
-    
-
 </head>
+
 <body>
 	<?php include "includes/navigation_bar.php";?>
    <div class="container"> 
@@ -38,7 +37,6 @@
        </div>
     <form action="" method="post" onchange="checkform()" role="form">
       <div class="row"> 
-
                 <div class="form-group col-xs-2">
                     <label >Full name*</label>
                     <input type="text" class="form-control rq" id="username" name="fullname" placeholder="Enter your full name">
@@ -88,38 +86,31 @@
                         </div>
                     </div>
                 </div>
+          </div>
 
-            <div class="row"> 
+          <div class="row"> 
             <div class="form-group col-lg-4">
             <label >Faculty*</label>
-            <div class="checkbox">
-                <label><input type="checkbox" id="faculty" name="faculty" value="accounting">Accounting</label>
-                </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="faculty" name="faculty" value="business">Business</label>
-                </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="faculty" name="faculty" value="healthcare">Healthcare</label>
-                </div>
-             <div class="checkbox">
-              <label><input type="checkbox" id="faculty" name="faculty" value="hospitality">Hospitality</label>
-                </div>
-             <div class="checkbox">
-              <label><input type="checkbox" id="faculty" name="faculty" value="IT">IT</label>
-                </div>     
-                </div>
-            </div> 
-    
-            <div class="row col-lg-12">
-                <button type="submit" class="btn btn-primary" name="create" id="signup">Create</button>
-            </div>
-            
-            </div>
+            <?php 
+            $res=mysqli_query($conn,"SELECT * FROM faculty");
+            while($row=mysqli_fetch_array($res))
+            {
+              ?>
+              <div class="checkbox"><label><input type="checkbox" value="<?php echo $row["facultyid"];?>" ><?php echo $row["facultyname"]?></label></div>
+            <?php  
+            }
+            ?>
+            <input type="checkbox" id="checkAll">Check All
+
+           
 
 
                     <!-- Error Message -->
                     <br><br>
                     <span style="color:red;font-size=20px;"><?php echo $error; ?></span>
+                     <div class="row col-lg-12">
+                <button type="submit" class="btn btn-primary" name="create" id="signup">Create</button>
+            </div>
         </form>
        </div> 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -128,7 +119,8 @@
     <script src="js/bootstrap.min.js"></script>  
     <script type="text/javascript" src="js/spinner.js"></script>
     <script src="js/site.js" type="text/javascript"></script> 
-    <script>function change_branch(){
+    <script>
+      function change_branch(){
           var xmlhttp=new XMLHttpRequest();
           xmlhttp.open("GET","ajax.php?branch="+document.getElementById("branchdd").value,false);
           xmlhttp.send(null);
@@ -162,7 +154,11 @@
     <script src="../../dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>	
-
+    <script>
+       $("#checkAll").click(function () {
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
+    </script>
     
 </body>
 </html>
