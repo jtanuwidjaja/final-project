@@ -20,7 +20,7 @@ if(isset($_POST['save'])){
             }
         else
         {
-            header("Location: class_list.php"); // Redirecting to other page
+            header("Location: room_list.php"); // Redirecting to other page
         }
         
         

@@ -7,7 +7,7 @@ $login = "root";
 //Define user password for DB connection
 $password = "root";
 //Define database name
-$dbname = "RoomAllocation";
+$dbname = "roomallocation";
 //--------------------------------------
 
 //Connection to database commands. Do not modify!

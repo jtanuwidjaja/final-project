@@ -10,11 +10,13 @@
     $faculty = $_POST['faculty'];
     $capacity = $_POST['capacity'];
     $repeat = $_POST['repeat'];
-    $end_repeat = $_POST['end_repeat'];
-    $end_repeatDB =  $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
+    
+   
     
     if ($repeat > 0) {
         //Defining last repeat date for query
+        $end_repeat = $_POST['end_repeat'];
+        $end_repeatDB =  $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
         $formated_date = date_create($dateDB);
         $formated_end_repeat = date_create($end_repeatDB);
         $interval = date_diff($formated_end_repeat, $formated_date); //end_date - date
