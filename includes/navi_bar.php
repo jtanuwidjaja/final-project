@@ -41,7 +41,7 @@
             echo '
             '; } ?>
             
-            <li><a href="room_list.php">Room List</a></li> 
+            <li><a href="class_list.php">Class List</a></li> 
             <li><a href="contact.php">Contact us</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -56,17 +56,3 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-
-<script type="text/javascript">
- $('document').ready(function() {
-    $('.navbar-collapse li a').each(function() {
-        if ('http://localhost/ip_project/'+$(this).attr('href') == window.location.href)
-        {
-            $(this).parent().addClass('active');
-        }
-    });
-}); 
- </script>

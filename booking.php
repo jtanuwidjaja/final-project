@@ -122,12 +122,9 @@
                             while($row = mysqli_fetch_array($campusquery)){
                                 
                                 echo '<option value="'.$row["branchid"].'"';
-                                if (isset($branch)) {
-                                    if ($row["branchid"] == $branch) {
-                                        echo ' selected';
-                                     }
+                                if ($row["branchid"] == $branch) {
+                                    echo ' selected';
                                 }
-                                
                                 echo '>'.$row["branchname"].'</option>';
                             }
                         ?>
@@ -140,10 +137,8 @@
                         <?php 
                             while($row = mysqli_fetch_array($facultyquery)){
                                 echo '<option value="'.$row["facultyid"].'"';
-                                if (isset($faculty)) {
-                                    if ($row["facultyid"] == $faculty) {
-                                        echo ' selected';
-                                    }
+                                if ($row["facultyid"] == $faculty) {
+                                    echo ' selected';
                                 }
                                 echo '>'.$row["facultyname"].'</option>';
                             }
