@@ -13,7 +13,10 @@ if(isset($_POST['save'])){
     $role = $_POST['role'];
     
     
-        include("includes/DB_connection.php");
+        //Establishing Connection with server by passing server_name, user_id and pass as a parameter
+        $conn = mysqli_connect("localhost", "root", "root");
+        //Selecting Database
+        $db = mysqli_select_db($conn, "MRBS");
         //sql query to fetch information of registerd user and finds user match.
         $query = mysqli_query($conn, "UPDATE `user` SET `password`='$password',`username`='$username',`role`='$role',`age`='$age',`phone`='$phone',`email`='$email',`gender`='$gender',`status`='$status' WHERE `userid`='$userid'");
         
@@ -34,7 +37,10 @@ if(isset($_POST['updatepass'])){
     $old_password=$_POST['old_password'];
     $password=$_POST['password'];
     
-    include("includes/DB_connection.php");
+    //Establishing Connection with server by passing server_name, user_id and pass as a parameter
+    $conn = mysqli_connect("localhost", "root", "root");
+    //Selecting Database
+    $db = mysqli_select_db($conn, "MRBS");
     //sql query to fetch information of registerd user and finds user match.
     
     $query = mysqli_query($conn, "SELECT * FROM user WHERE `userid`='$userid'");

@@ -19,15 +19,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	
-        <!-- Static navbar -->
-    <?php include("./includes/navi_bar.php")?>
-	
-    
-   
-       
-    
-        <div class="container"> 
+    <?php include "includes/navi_bar.php";?> 
+    <div class="container"> 
        <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Change password
@@ -38,11 +31,11 @@
        </div>
        
     
-        <form action="" method="post" onchange="checkform()" role="form">
+        <form action="" method="post" role="form" class="check_rq_fields">
            <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Username*</label>
-                    <input type="text" class="form-control rq" id="userid" name="userid" placeholder="Enter username" readonly <?php echo 'value='.$_SESSION["userid"]; ?>>
+                    <label >Login*</label>
+                    <input type="text" class="form-control rq" id="userid" name="userid" placeholder="Enter username" readonly <?php echo 'value='.$_SESSION["login"]; ?>>
                 </div>
            </div>
             <div class="row"> 
@@ -68,39 +61,27 @@
         </form>
        </div>    
         
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <footer id="myFooter">
-        
-        <br>
-        <div class="text-center">
-        <p>Find us in social networks<p>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-facebook"><i class="fa fa-facebook"></i></a>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-instagram"><i class="fa fa-instagram"></i></a>
-        <a onclick="" class="btn btn-social-icon btn-lg btn-linkedin"><i class="fa fa-linkedin"></i></a>
-    </div>
-        <div class="footer-copyright">
-            <p>© 2017 Copyright Andrey Dementyev</p>
-        </div>
-        
-        
-    </footer>
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>    
-      
-    <script src="js/site.js" type="text/javascript"></script> 
-        
-    
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>	
+<!--Footer-->
+<?php include("./includes/footer.php");?>
+<!--Java Script   -->
+<!--JQuery-->
+<script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
+
+<!--Bootstrap main -->
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+        $('.check_rq_fields').on("click change", function() {
+            var f = $(".rq");
+            var cansubmit = true;
+            for (var i = 0; i < f.length; i++) {
+                if (f[i].value.length == 0) cansubmit = false;
+            }
+            $('#signup').prop('disabled', !cansubmit);
+        });
+    });
+</script>
     
 </body>
 </html>

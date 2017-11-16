@@ -96,7 +96,9 @@ if (!isset($_SESSION["role"])) {
        
        
     <?php
-    include("includes/DB_connection.php");
+    $conn = mysqli_connect("localhost", "root", "root");
+    //Selecting Database
+    $db = mysqli_select_db($conn, "MRBS");
     //sql query to fetch information of registerd user and finds user match.
     $userid = $_SESSION["userid"];
     $query = mysqli_query($conn, "SELECT * FROM bookingrecord JOIN slot ON bookingrecord.slotid=slot.slotid JOIN meeting ON bookingrecord.meetingid=meeting.meetingid JOIN room ON bookingrecord.roomid=room.roomid JOIN user ON bookingrecord.userid=user.userid WHERE bookingrecord.userid='$userid'");
