@@ -1,15 +1,36 @@
 <?php
     //Connection to the database
     include("./includes/DB_connection.php");
-
-    $query = mysqli_query($conn, "SELECT * FROM room");
-
+    
+    $branch = $_POST['branch'];
     $rooms = array();
+    
+    //echo 'rooms'.$branch.' ';
+    //Add as resources buildings
+    $query = mysqli_query($conn, "
+    SELECT * FROM building WHERE branchid = $branch");
+    //WHERE branchid = $branch");
+    while($row = mysqli_fetch_array($query)){
+        $r = array();
+        $r['id'] = 'b'.$row['buildingid'];
+        $r['title'] = $row['buildingname'];
+        $bh = array();
+        $bh['start'] = '00:00:00';
+        $bh['end'] = '00:00:00';
+        $r['businessHours'] = $bh;
+        
+        // Merge the event array into the return array
+        array_push($rooms, $r);
+    }
+
+    $query = mysqli_query($conn, "SELECT room.roomid, room.roomname, room.capacity, room.buildingid   FROM room JOIN building ON room.buildingid = building.buildingid 
+    WHERE building.branchid = $branch");
 
     while($row = mysqli_fetch_array($query)){
         $r = array();
         $r['id'] = $row['roomid'];
         $r['title'] = $row['roomname'].' ('.$row['capacity'].')';
+        $r['parentId'] = 'b'.$row['buildingid'];
         
         // Merge the event array into the return array
         array_push($rooms, $r);

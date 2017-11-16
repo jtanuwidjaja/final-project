@@ -1,52 +1,94 @@
+<?php
+    include("loginserv.php");
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
+        header("location: index.php");
+    }
+    include("./includes/DB_queries.php");
+    
+    $campusquery = get_branch_list();
 
-<!DOCTYPE html>
+    //searching branch for administrators of faculties
+    if ($_SESSION["role"] == 1) {
+        $userid = $_SESSION['login'];
+        $userbrachquery = mysqli_query($conn, 
+       "SELECT branchid, facultyid FROM user WHERE login = '$userid'");
+        $rows = mysqli_fetch_array($userbrachquery);
+        $userbranch = $rows["branchid"];
+        //$faculty = $rows["facultyid"];
+
+    }
+?>
+
+<!DOCTYPE HTML5>
 <html>
 <head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking calendar</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href='css/fullcalendar.min.css' rel='stylesheet' />
     <link href='css/scheduler.min.css' rel='stylesheet' />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    
+    
+    <link href="css/calendar.css" rel="stylesheet" />
+    
 </head>
 <body>
     <!--Navigation bar-->
     <?php include("./includes/navi_bar.php")?>	
+<!--    <?php include("get_events.php")?>-->
+<!--<?php include("get_rooms.php")?>-->
     <div class="container">
         <div class="row">
-        <div id='calendar'></div>
-        <div class="modal fade" id="editevent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                    ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <div class="form-group col-lg-4">
+                <label >Campus</label>
+                <select class="form-control" name="campus" id="campus"<?php if ($_SESSION["role"] != "0") echo 'readonly'?>>
+                <?php 
+                    while($row = mysqli_fetch_array($campusquery)){        
+                        echo '<option value="'.$row["branchid"].'"';
+                        if ($row["branchid"] == $userbranch) {
+                            echo ' selected';
+                        }
+                        echo '>'.$row["branchname"].'</option>';
+                    }
+                ?>
+                </select>
+                </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-12">
+                <div id='calendar'></div>
             </div>
         </div>
-        </div>
     </div>
-    </div>
+        
     
+
 <script src='lib/moment.min.js'></script>
 <script src='lib/jquery.min.js'></script>
 <script src='lib/fullcalendar.min.js'></script>
 <script src='js/scheduler.min.js'></script> 
+
     
 <!--Bootstrap main -->
 <script src="js/bootstrap.min.js"></script>
     
+<script type="text/javascript" src="js/js.cookie.js"></script>
+    
     
 <script type="application/javascript">
-$(document).ready(function() {
-    $('#calendar').fullCalendar({
+
+$(document).ready(function calendar() {
+    create_calendar();
+});
+
+$('#campus').change(function(){
+    $('#calendar').fullCalendar( 'destroy' );
+    create_calendar();
+});
+ 
+function create_calendar() {
+        $('#calendar').fullCalendar({
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
 			editable: true,
 			aspectRatio: 1.8,
@@ -56,7 +98,12 @@ $(document).ready(function() {
 				center: 'title',
 				right: 'timelineDay,timelineThreeDays,agendaWeek,month'
 			},
-			defaultView: 'timelineDay',
+			defaultView: Cookies.get('fullCalendarCurrentView') || 'timelineDay',
+            defaultDate: Cookies.get('fullCalendarCurrentDate') || null,
+            viewRender: function(view) {
+                Cookies.set('fullCalendarCurrentView', view.name, {path: ''});
+                Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {path: ''});
+            },
 			views: {
 				timelineThreeDays: {
 					type: 'timeline',
@@ -64,18 +111,24 @@ $(document).ready(function() {
 				}
 			},
 			eventOverlap: false, // will cause the event to take up entire resource height
-			resourceAreaWidth: '7%',
+			resourceAreaWidth: '15%',
 			resourceLabelText: 'Rooms',
     resources: {
         url: 'get_rooms.php',
-        type: 'POST'
+        type: 'POST',
+        data: {
+                branch: $('#campus option:selected').val()
+            }
     },
         
     events: {
         url: 'get_events.php',
-        type: 'POST'
+        type: 'POST',
+        data: {
+                branch: $('#campus option:selected').val()
+            }
     },
-        
+            
     eventDrop: function (event, delta, revertFunc) {       
         update_event(event, delta, revertFunc);
     },
@@ -84,11 +137,6 @@ $(document).ready(function() {
         update_event(event, delta, revertFunc);
     },
     eventClick: function(calEvent, jsEvent, view) {
-        
-//        alert('Event: ' + calEvent.id);
-//        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-//        alert('View: ' + view.name);
-        
         window.location = "show_event_info.php?id=" + calEvent.id;
         var method = 'POST';
         var path = 'show_event_info.php';
@@ -98,14 +146,9 @@ $(document).ready(function() {
 //        params['event_end'] = calEvent.end;
 //        params['event_user_id'] = calEvent.user_id;
         post_to_url(path, params, method);
-
-//        // change the border color just for fun
-//        $(this).css('border-color', 'red');
-
     }    
     });
-});
-
+}
 function update_event(event, delta, revertFunc) {
     var start = $.fullCalendar.formatDate(event.start, "HH:mm:ss");
     var date = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD");
@@ -145,11 +188,12 @@ function post_to_url(path, params, method) {
   form.submit();
 }
 </script>
-
     
-    
-
-    
-    
+<script>
+        <?php if ($_SESSION["role"] != "0") echo "
+        $('#campus option:not(:selected)').prop('disabled', true);
+        ";?>
+</script>
+       
 </body>
 </html>
