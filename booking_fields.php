@@ -2,7 +2,7 @@
             <div class="row">
                 <div class="form-group col-lg-4">
                     <label >Room</label>
-                    <select class="form-control" name="room">
+                    <select class="form-control" name="room" id="room">
                         <?php 
                             while($row = mysqli_fetch_array($roomquery)){
                                 

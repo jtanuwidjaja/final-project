@@ -7,25 +7,15 @@
     {
        $ID=$_GET["ID"]; 
 
-    //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-    $conn = mysqli_connect("localhost", "root", "root");
-    //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
-    //sql query to fetch information of registerd user and finds user match.
-    $query = mysqli_query($conn, "DELETE FROM bookingrecord WHERE bookingid='$ID'");
-
-    if ($_SESSION["role"] == "customer") {
-        header ("Location: cancel_booking.php");
-    }
-    else {
-        header ("Location: booking_list.php");
-    }
-    mysqli_close($conn); // Closing connection 
+    //Connection to the database
+    include("./includes/DB_connection.php");
         
-        
-    }
-
+//    $query = mysqli_query($conn, "DELETE FROM bookingrecord WHERE bookingid='$ID'");
     
-   
+    mysqli_close($conn); // Closing connection 
+           
+    //header ("Location: calendar.php");
+       
+    }
     
 ?>
