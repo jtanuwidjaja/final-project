@@ -2,18 +2,19 @@
 if(isset($_POST['save'])){
     
     $roomid=$_POST['roomid'];
-    $fullname=$_POST['roomname'];
-    $tower=$_POST['towerdd'];
-    $level=$_POST['leveldd'];
+    $fullname=$_POST['fullname'];
+    $tower=$_POST['tower'];
+    $level=$_POST['level'];
+    $room=$_POST['room'];
     $capacity=$_POST['capacity'];
  
     
-        include ("includes/DB_connection.php");
+        //Establishing Connection with server by passing server_name, user_id and pass as a parameter
+        $conn = mysqli_connect("localhost", "root", "root");
+        //Selecting Database
+        $db = mysqli_select_db($conn, "MRBS");
         //sql query to fetch information of registerd user and finds user match.
-        $query = mysqli_query($conn, "UPDATE `room` SET `roomname`='$fullname',`buildingid`='$tower',`level`='$level',`capacity`='$capacity' WHERE roomid='$roomid'");
-
-        $some = "UPDATE `room` SET `roomname`='$fullname',`buildingid`='$tower',`level`='$level',`capacity`='$capacity' WHERE roomid='$roomid'";
-     
+        $query = mysqli_query($conn, "UPDATE `tclass` SET `fullname`='$fullname',`fullname`='$fullname',`tower`='$tower',`level`='$level',`room`='$room',`capacity`='$capacity' WHERE `roomid`='$roomid'");
         
         if(! $query ) {
             $error = "Can't update user profile. Try again";   
