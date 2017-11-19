@@ -39,7 +39,7 @@ if(isset($_POST['submit'])){
                 $_SESSION["name"] = $row["first_name"].' '.$row["last_name"];
                 $_SESSION["role"] = $row["role"];
                 $_SESSION["login"] = $row["login"];
-                header("Location: index.php"); 
+                header("Location: calendar.php"); 
                    
             }
             else
