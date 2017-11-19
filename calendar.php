@@ -46,8 +46,9 @@
                 <?php 
                     while($row = mysqli_fetch_array($campusquery)){        
                         echo '<option value="'.$row["branchid"].'"';
-                        if ($row["branchid"] == $userbranch) {
+                        if(isset($userbranch)){if ($row["branchid"] == $userbranch) {
                             echo ' selected';
+                        }
                         }
                         echo '>'.$row["branchname"].'</option>';
                     }

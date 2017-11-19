@@ -1,17 +1,12 @@
 <?php
-    include("loginserv.php");
-    if (isset($_GET['logout'])) {
-	   session_destroy();
-	   unset($_SESSION['user']);
-        unset($_SESSION['role']);
-	   header("location: index.php");
-}
+include("loginserv.php"); // Include loginserv for checking username and password
 ?>
 
 <!doctype html>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<title>Login to MRBS</title>
+    <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Meeting Room Booking System</title>
 
@@ -19,70 +14,74 @@
 	<link rel="stylesheet" type="text/css" href="css/mobile.css" media="screen and (max-width : 568px)">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="css/login.css">-->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style>
+
+            input[type=text] {
+            background-color: #F6B03F;
+            color: black;
+        }
+        input[type=password] {
+            background-color: #F6B03F;
+            color: black;
+        }
+
+        #box{
+            background-color: black;
+        }
+
+        .container{
+            opacity: 0.9;
+        }
+        body{
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+             color:white;
+            background: url(images/meeting_room1_003.jpg) no-repeat center top;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-size: 100%;
+        }
+    </style>
+</head> 
     
-</head>
 <body>
+  <div class="container">
+        <div class="card-container" id="box">
+            <form action="" method="post" onchange="checkform()">
+                <h1>Login</h1> 
+                <div class="form-group">
+                    <label >Username</label>
+                    <input type="text" class="form-control rq" id="user" name="user" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control rq"  id="pass" name="pass" placeholder="Enter password">
+                </div>
+<!--                <div class="g-recaptcha" data-sitekey="6Lc8jy8UAAAAAGJoA7zhGCTPqSSHtupk6YZj2iWn" style="display: inline-block"></div><br><br>-->
+                <button type="submit" class="btn btn-primary" name="submit" id="signup" disabled>Submit</button>
 
-<?php include "includes/navi_bar.php";?>
-    <div class="container">
+                <!-- Error Message -->
+                <br><br>
+                <span style="color:red;font-size=20px;"><?php echo $error; ?></span>
+            </form>
+            <a href="lostpass.php" class="forgot-password">
+                Forgot the password?
+            </a>
+        </div>
     
-    
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
-
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <div class="item active">
-      <img src="images/meeting_room1.jpg" width="100%" alt="Los Angeles">
     </div>
-
-    <div class="item">
-      <img src="images/meeting_room2.jpg" width="100%" alt="Chicago">
-    </div>
-
-    <div class="item">
-      <img src="images/meeting_room3.jpg" width="100%" alt="New York">
-    </div>
-  </div>
-
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
     
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <h1>Meeting Room Booking System</h1>
-        <p>This is online meeting room booking system for all office staff. Any Meeting room can be booked through this system. </p>
-        <?php if (!isset($_SESSION["name"])) {
-                echo '
-            <p>Please, login to book the meeting room. If have no login, please, pass quick registration.</p>
-            <p>
-            <a class="btn btn-lg btn-primary" href="login.php" role="button">Login</a>
-            <span> </span><a class="btn btn-lg btn-primary" href="registration.php" role="button">Register</a>
-            </p>';} ?>
-      </div>
-
-    </div> <!-- /container -->
-
-<?php include "includes/footer.php";?>
     
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	 
+    <script src="js/site.js" type="text/javascript"></script>
+    
+    
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>  
+
 </body>
 </html>

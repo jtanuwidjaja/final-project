@@ -12,36 +12,79 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php"><img src="images/MRBSicon.png" width="100px" height="25px" alt="">
+          <a class="navbar-brand" href="calendar.php"><img src="images/MRBSicon.png" width="100px" height="25px" alt="">
           </a>
 
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="navibar" class="nav navbar-nav">
-            <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="gallery.php">Gallery</a></li>
+            <li><a href="calendar.php">Home</a></li>
+            <li><a href="Booking.php">Booking</a></li>
               
             <?php if (isset ($_SESSION["role"])) { 
                 
-    echo '
+            echo '
             
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Booking<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="booking.php">Book room</a></li>';}
-                if (($_SESSION["role"] == "1")||($_SESSION["role"] == "0")){
-            echo '
-                <li><a href="booking_list.php">Booking list</a></li>'; }
-                if (isset ($_SESSION["role"])) { echo '                 
-                <li role="separator" class="divider"></li>
-                <li><a href="cancel_booking.php">Cancel booking</a></li>
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catalogue<span class="caret"></span></a>
+              <ul class="dropdown-menu">';}
+                if (($_SESSION["role"] == "0")){
+                echo '<li><a href="room_list.php">Room list</a></li>'
+                ;}
+                if(($_SESSION["role"] == "0")){
+                echo '<li><a href="building.php">Building</a></li>';}
+                if(($_SESSION["role"] == "0")){
+                echo '<li><a href="branch.php">Branch</a></li>';}
+
+
+
+                if (isset ($_SESSION["role"])) { 
+                echo '<li role="separator" class="divider"></li>
+                <li><a href="faculty.php">Faculty</a></li>';}
+
+                if (($_SESSION["role"] == "0" || ($_SESSION["role"] == "1"))) { 
+                echo '<li role="separator" class="divider"></li>
+                <li><a href="user.php">Tutor</a></li>
+
+
               </ul>
             </li>'; } ?>
-            <?php if ($_SESSION["role"] == "0"){
+
+            <?php if (isset ($_SESSION["role"])) { 
+                
             echo '
-            '; } ?>
             
-            <li><a href="room_list.php">Room List</a></li> 
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration<span class="caret"></span></a>
+              <ul class="dropdown-menu">';}
+                if (($_SESSION["role"] == "0")){
+                echo '<li><a href="user.php">User list</a></li>'
+                ;}
+                if(($_SESSION["role"] == "0")){
+                echo '<li><a href="branch.php">Branch</a></li>
+              </ul>
+            </li>'; } ?>
+
+            <?php if (isset ($_SESSION["role"])) { 
+                
+            echo '
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports<span class="caret"></span></a>
+              <ul class="dropdown-menu">';}
+                if (($_SESSION["role"] == "0" || $_SESSION["role"] == "1" || $_SESSION["role"] == "2")){
+                echo '<li><a href="room_list.php" class="dropdown-item">Room list</a></li>';}
+                if(($_SESSION["role"] == "0" || $_SESSION["role"] == "1" || $_SESSION["role"] == "2")){
+                echo '<li><a href="building.php" class="dropdown-item">Building</a></li>';}
+                if(($_SESSION["role"] == "0" || $_SESSION["role"] == "1" || $_SESSION["role"] == "2")){
+                echo '<li><a href="branch.php" class="dropdown-item">Branch</a></li>
+
+
+              </ul>
+            </li>'; } ?>
+
+
+                         
             <li><a href="contact.php">Contact us</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -65,7 +108,7 @@
         $('.navbar-collapse li a').each(function() {
             if ('http://localhost/ip_project/'+$(this).attr('href') == window.location.href)
             {
-                $(this).parent().addClass('active');
+                $(this).addClass('active');
             }
         });
     }); 
