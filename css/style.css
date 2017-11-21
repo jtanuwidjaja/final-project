@@ -1,7 +1,17 @@
-body {
-  min-height: 1000px;
+html, body {
+    height: 100%;
+    margin: 0;
 }
-
+#wrap {
+    padding: 10px;
+    min-height: -webkit-calc(100% - 100px);     /* Chrome */
+    min-height: -moz-calc(100% - 100px);     /* Firefox */
+    min-height: calc(100% - 100px);     /* native */
+}
+.footer {
+    position: relative;
+    clear:both;
+}
 /*
 .navbar-static-top {
   margin-bottom: 19px;
@@ -12,6 +22,8 @@ body {
 	background-color: #222222;
 	color:white;
     text-align: center;
+    bottom:0;
+  	width:100%;
 }
 
 #myFooter .footer-copyright{
