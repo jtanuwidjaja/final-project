@@ -7,6 +7,7 @@ if(isset($_POST['create'])){
     $capacity = $_POST['capacity'];
     $fullname = $_POST['fullname'];
     $roomid = $_POST['roomid'];
+    $status = $_POST['status'];
 
 
 
@@ -35,10 +36,10 @@ if(isset($_POST['create'])){
         //sql query to fetch information of registerd user and finds user match.
         $query = mysqli_query($conn, "INSERT INTO room (roomname, buildingid, level, capacity) VALUES ('$fullname','$tower','$level','$capacity')");
         
-        $error1 =  "INSERT INTO room ('roomname', 'buildingid', 'level', 'capacity') VALUES ('$fullname','$tower','$level','$capacity')";
+        $error1 =  "INSERT INTO room ('roomname', 'buildingid', 'level', 'capacity', 'status') VALUES ('$fullname','$tower','$level','$capacity', '$status')";
 
         if(! $query ) {
-            $error = "something wrong";   
+            $error = "Error";   
             }
         else
         {

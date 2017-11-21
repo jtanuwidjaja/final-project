@@ -20,6 +20,7 @@
     $capacity = $row["capacity"];
     $level = $row["level"];
     $branchid = $row["branchid"];
+    $status = $row["status"];
 
 
 ?>
@@ -56,11 +57,12 @@
     
         <form action="" method="post" onchange="checkform()" role="form">
            <div class="row"> 
-                <div class="form-group col-lg-4">
+                <div class="form-group col-xs-2">
                     <label >Room ID*</label>
                     <input type="text" class="form-control rq" id="roomid" name="roomid" placeholder="Enter username" readonly <?php echo 'value='.$roomid; ?>>
                 </div>
-                <div class="form-group col-lg-4" <?php if ($_SESSION["role"] != "administrator") echo 'style="display:none;"';?>>
+
+                <div class="form-group col-xs-2" <?php if ($_SESSION["role"] == "2") echo 'style="display:none;"';?>>
                     <label>Room Name*</label>
                     <input type="roomname" class="form-control rq"  id="roomname" name="roomname" placeholder="Enter roomname" <?php echo 'value='.$roomname; ?>>
                 </div>
@@ -69,7 +71,7 @@
             
 
               <div class="row"> 
-                <div class="form-group col-lg-2">
+                <div class="form-group col-xs-2">
                  <label for="ex2">Select Branch</label>
                          <select class="form-control" id="branchdd" name="branch" onchange="change_branch()">
                               <option>Select</option>
@@ -138,12 +140,29 @@
                         </div>
                     </div>
                 </div>
-        <div class="row"> 
-              <div class="form-group col-lg-4">
-                <button type="submit" class="btn btn-primary" name="save" id="signup">Save</button>
+                 </div>
+       
+        
+            
+          <div class="row">
+              <div class="form-group col-xs-2">
+                    <label >Status</label>
+                    <select class="form-control" id="status" name="status" <?php if ($_SESSION["role"] != "0") echo 'readonly';?>>
+                        <option value="1" <?php if ($status == 1) echo 'selected'; ?>>Enable</option>
+                        <option value="0" <?php if ($status == 0) echo 'selected'; ?>>Disable</option>
+                    </select>
+                </div>
+              </div>
+
+
+               <div class="row">
+                <div class="form-group col-lg-4">
+                 <button type="submit" class="btn btn-primary" name="save" id="signup">Save</button>
+             
+
               </div>
             </div>
-            
+          
       
 
     

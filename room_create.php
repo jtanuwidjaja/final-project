@@ -87,9 +87,19 @@
                     </div>
                 </div>
           </div>
+          <div class="row">
 
-          <div class="row"> 
-            <div class="form-group col-lg-4">
+           <div class="form-group col-xs-2">
+                    <label >Status</label>
+                    <select class="form-control" id="status" name="status" >
+                        <option value="1">Enable</option>
+                        <option value="0">Disable</option>
+                    </select>
+                </div>
+          </div>
+          
+          <div class="row">
+           <div class="form-group col-lg-4">
             <label >Faculty*</label>
           <?php 
             $res=mysqli_query($conn,"SELECT * FROM faculty");
@@ -104,9 +114,9 @@
             
           ?>
             <input type="checkbox" id="checkAll" name="checkAll">Check All
-
-           
-
+                </div>
+                </div>
+        
 
                     <!-- Error Message -->
                     <br><br>
