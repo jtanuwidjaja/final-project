@@ -68,12 +68,21 @@ if ($_SESSION["role"] != "0") {
                         <th>Address</th>
                         <th>Capacity</th>
                         <th>Room ID</th>
+                        <th>Availability</th>
                         <th>Edit or Delete</th>
 
                     </tr>
                 </thead>
                 <tbody>';
     while($row = mysqli_fetch_array($query)){   //Creates a loop to loop through results            
+        
+
+
+
+
+
+
+
         echo '
                 <tr>
                     <td>
@@ -96,22 +105,39 @@ if ($_SESSION["role"] != "0") {
                     </td>
                     <td>
                     '.$row["roomid"].'
-                    </td>
-                    <td style="width:60px; text-align: center;">
+                    </td>';
+
+                     
+
+        if($row["status"] == 0){  
+                        echo '
+                        <td style="text-align: center;">
+                            <span class="glyphicon glyphicon-off" style="color: gray;"></span>
+                        </td>';
+        }
+        else{
+                        echo '
+                        <td style="text-align: center;">
+                            <span class="glyphicon glyphicon-off" style="color: green;"></span>
+                        </td>';
+        }
+                   
+
+                 echo'   <td style="width:60px; text-align: center;">
                         <a href="room_edit.php?ID='.$row["roomid"].'"><span class="glyphicon glyphicon-pencil"></span></a>
                         <a href="includes/delete_room.php?ID='.$row["roomid"].'"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>';
             
     }
+
     echo "</tbody></table></form>"; //Close the table in HTML
-    echo '<p><a href="room_create.php">Create new room</a></p>';
+    echo '<a href="room_create.php" class="btn btn-primary" role="button">Create new room</a>';
     mysqli_close($conn); // Closing connection
     ?>
       
 </div>
 
-    
     <script src="https://code.jquery.com/jquery-1.12.4.js"> </script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"> </script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"> </script>

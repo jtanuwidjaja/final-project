@@ -65,7 +65,8 @@ CREATE TABLE `room` (
   `roomname` varchar(10) NOT NULL,
   `buildingid` int(11) NOT NULL,
   `level` int(11) NOT NULL,
-  `capacity` int(11) NOT NULL
+  `capacity` int(11) NOT NULL,
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

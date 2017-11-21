@@ -6,13 +6,13 @@ if(isset($_POST['save'])){
     $tower=$_POST['towerdd'];
     $level=$_POST['leveldd'];
     $capacity=$_POST['capacity'];
+    $status=$_POST['status'];
  
     
         include ("includes/DB_connection.php");
         //sql query to fetch information of registerd user and finds user match.
-        $query = mysqli_query($conn, "UPDATE `room` SET `roomname`='$fullname',`buildingid`='$tower',`level`='$level',`capacity`='$capacity' WHERE roomid='$roomid'");
+        $query = mysqli_query($conn, "UPDATE `room` SET `roomname`='$fullname',`buildingid`='$tower',`level`='$level',`capacity`='$capacity',`status`='$status' WHERE roomid='$roomid'");
 
-        $some = "UPDATE `room` SET `roomname`='$fullname',`buildingid`='$tower',`level`='$level',`capacity`='$capacity' WHERE roomid='$roomid'";
      
         
         if(! $query ) {
