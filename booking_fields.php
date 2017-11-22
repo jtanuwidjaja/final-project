@@ -100,7 +100,7 @@
             <div class="row">
                 <div class="form-group col-lg-12">
                     <label >Class Name</label>
-                    <input type="text" class="form-control rq" id="userid" name="classname" placeholder="Enter class name" <?php if (isset($classname)) {echo 'value="'.$classname.'"';}?>>
+                    <input type="text" class="form-control rq" id="userid" name="classname" placeholder="Enter class name" <?php echo 'value="'.$classname.'"';?>>
                 </div>
             </div>
             <div class="row">
@@ -123,10 +123,8 @@
                         <?php 
                             while($row = mysqli_fetch_array($tutorquery)){
                                 echo '<option value="'.$row["login"].'" phone="'.$row["phone"].'" email="'.$row["email"].'"';
-                                if(isset($tutor)){
                                 if ($row["login"] == $tutor) {
                                     echo ' selected';
-                                }
                                 }
                                 echo '>'.$row["first_name"].' '.$row["last_name"].'</option>';
                             }
