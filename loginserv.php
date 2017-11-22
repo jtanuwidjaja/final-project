@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
+
 $error=''; //Variable to Store error message;
 $conf=''; //Variable for confirmation of registration
 if(isset($_POST['submit'])){

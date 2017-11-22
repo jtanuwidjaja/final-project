@@ -1,6 +1,8 @@
 <?php
 include("loginserv.php");
+if(!isset($_SESSION)){
 session_start();
+}
 //$_SESSION['hide_step2'] = true;
 //$_SESSION['hide_step3'] = true;
 $hide_step2 = true;
