@@ -24,9 +24,9 @@
         $faculty = $rows["facultyid"];
     }
     
-    $date = $_POST['date'];
+    if(isset($date)){$date = $_POST['date'];
     $time_start = $_POST['time_start'];
-    $time_end = $_POST['time_end'];
+    $time_end = $_POST['time_end'];}
 ?>
 
 <!doctype HTML5>
@@ -77,7 +77,7 @@
                 <div class="form-group col-lg-4 col-md-4">
                     <label >Date</label>
                     <div class='input-group date datepicker'>
-                       <input type='text' class="form-control rq" id="date" name="date" <?php echo 'value='.$date; ?>>
+                       <input type='text' class="form-control rq" id="date" name="date" <?php if(isset($date)){echo 'value='.$date;} ?>>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -86,7 +86,7 @@
                 <div class="form-group col-lg-4">
                     <label >Time from</label>
                     <div class='input-group date' id="timepickerfrom">
-                        <input type='text' class="form-control rq" id="time_start" name="time_start" <?php echo 'value='.$time_start; ?>>
+                        <input type='text' class="form-control rq" id="time_start" name="time_start" <?php if(isset($time_start)){ echo 'value='.$time_start;} ?>>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                         </span>
@@ -95,7 +95,7 @@
                 <div class="form-group col-lg-4">
                     <label >Time to</label>
                     <div class='input-group date' id="timepickerto">
-                    <input type='text' class="form-control rq" id="time_end" name="time_end" <?php echo 'value='.$time_end; ?>>
+                    <input type='text' class="form-control rq" id="time_end" name="time_end" <?php if(isset($time_end)){echo 'value='.$time_end;} ?>>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-time"></span>
                     </span>
@@ -201,8 +201,6 @@
       
 </div>
     
-    <!--Footer-->
-    <?php include("./includes/footer.php");?>
 <!--Java Script   -->
 <!--JQuery-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"> </script>

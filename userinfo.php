@@ -156,7 +156,7 @@
                     <input type="email" class="form-control rq" id="email" name="email" placeholder="Enter username" <?php echo 'value='.$email; ?>>
                 </div>
             </div>
-            <input type="text" name="return" hidden <?php echo 'value='.$_GET['return'];?>>
+            <input type="text" name="return" hidden <?php if(isset($_GET['return'])){echo 'value='.$_GET['return'];}?>>
             <div class="row col-lg-4">
                 <button type="submit" class="btn btn-primary" name="save" id="signup" disabled>Save</button>
             </div>
