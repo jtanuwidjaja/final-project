@@ -1,6 +1,9 @@
 <?php
     include("loginserv.php");
     include("edit_buildingquery.php");
+    if ($_SESSION["role"] != "0") {
+    //$_SESSION['msg'] = "You must log in first";
+    header("location: login.php");}
 
     
     include "includes/DB_connection.php";
