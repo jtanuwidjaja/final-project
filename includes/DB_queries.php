@@ -94,7 +94,8 @@ function insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$
     require("./includes/DB_connection.php");
     $query = mysqli_query($conn, 
             "INSERT INTO `bookingrecord`(`bookingdate`, `roomid`, `time_start`, `login`, `time_end`, `facultyid`, `classname`, `capacity`, `bookingrepeat`, `end_repeat`,`tutor`) VALUES ('$dateDB','$roomid','$time_start','$userid','$time_end','$faculty','$classname','$capacity','$repeat','$end_repeatDB','$tutor')") or trigger_error(mysql_error());
-return $query;
+    $id = mysqli_insert_id($conn);
+return $id;
 }
 
 function  get_user_list() {

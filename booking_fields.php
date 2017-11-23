@@ -124,9 +124,9 @@
                             while($row = mysqli_fetch_array($tutorquery)){
                                 echo '<option value="'.$row["login"].'" phone="'.$row["phone"].'" email="'.$row["email"].'"';
                                 if(isset($tutor)){
-                                if ($row["login"] == $tutor) {
-                                    echo ' selected';
-                                }
+                                    if ($row["login"] == $tutor) {
+                                        echo ' selected';
+                                    }
                                 }
                                 echo '>'.$row["first_name"].' '.$row["last_name"].'</option>';
                             }

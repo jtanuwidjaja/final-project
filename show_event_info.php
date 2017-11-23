@@ -4,7 +4,6 @@
         header("location: index.php");
     }
     include("./includes/DB_queries.php");
-    include("update_booking.php");
     
     if (isset($_POST['id'])) {
         //fetching faculty for user with role "administrator" (role = 1)
@@ -77,14 +76,14 @@
                 <p>Change booking information</p>
             </div>
        </div>
-        <form action="" method="post" onchange="checkform()" role="form" class="check_rq_fields">
+        <form action="update_booking.php" method="post" onchange="checkform()" role="form" class="check_rq_fields">
 <!--        All fields for booking record card-->
             <?php include("booking_fields.php")?>	
             
             <input type="text" name="bookingid" hidden <?php echo 'value='.$id;?>>
             
             <div class="row col-lg-4">
-                <button class="btn btn-primary" name="back" onclick="goBack()">Back</button>
+                <button class="btn btn-primary" name="back" formaction="calendar.php">Back</button>
                 <button type="submit" class="btn btn-primary" name="save" id="signup" disabled>Save</button>
                 <button class="btn btn-primary" id="delete" <?php echo 'formaction="delete_booking.php?ID='.$id.'"'; ?>>Delete</button>'
                 
@@ -125,9 +124,35 @@
                     $('#delete').prop('disabled', true);";
             }
         ?>
-        function goBack() {
-            window.history.back();
-        }
+//       function update_booking() {
+//            var date = $("[name='date']").val();
+//            var time_start = $("[name='time_start']").val();
+//            var time_end = $("[name='time_end']").val();
+//            var repeat = $("[name='repeat']").val();
+//            var end_repeat = $("[name='end_repeat']").val();
+//            var faculty = $("[name='faculty']").val();
+//            var classname = $("[name='classname']").val();
+//            var capacity = $("[name='capacity']").val();
+//            var tutor = $("[name='tutor']").val();
+//            var bookingid = $("[name='bookingid']").val();
+//            var room = $("[name='room']").val();
+//            var campus = $("[name='campus']").val();
+//            
+//            $.ajax({
+//            url: 'update_booking.php',
+//            data: 'date='+ date + '&time_start=' + time_start + '&time_end=' + time_end + '&repeat=' + repeat + '&end_repeat=' + end_repeat + '&faculty=' + faculty + '&classname=' + '&capacity=' + capacity + '&tutor' + tutor +'&bookingid=' + bookingid + '&room=' + room + '&campus=' + campus,
+//            type: "POST",
+////            success: function(json) {
+////                    alert("Update successfully");
+////            },
+////            error: function(json) {
+////                    alert("There is some connection problems. Please contact to your system administrator.");
+////                    revertFunc();
+////            },
+//            }); 
+//        }
+//            
+//        }
     </script>
     <script src="js/booking.js" type="text/javascript">
     </script>
