@@ -36,10 +36,10 @@ mysqli_close($conn); // Closing connection
     
 </head>
 <body>
-    <div id="wrap">
+    
 <!--Navigation bar-->
     <?php include("./includes/navi_bar.php")?>	   
-    
+    <div id="wrap">
 <div class="container">
     <div class="row">
             <div class="col-lg-12">

@@ -1,6 +1,7 @@
 <?php
     include("loginserv.php");
     include("add_buildingquery.php");
+      include("includes/DB_connection.php");
     if ($_SESSION["role"] != "0") {
     //$_SESSION['msg'] = "You must log in first";
     header("location: login.php");
@@ -37,13 +38,27 @@
                 <p>Enter branch ID, building name, building address and number of level to complete registration</p>
             </div>
        </div>
-       
+
+         
     
         <form action="" method="post" onchange="checkform()" role="form">
            <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Branch ID*</label>
-                    <input type="text" class="form-control rq" id="branchid" name="branchid" placeholder="Enter Branch ID">
+                     <label for="ex2">Select Branch</label>
+                 <select class="form-control" id="branchdd" name="branchdd" onchange="change_branch()">
+                      <option>Select</option>
+                      <?php 
+                      $res=mysqli_query($conn,"SELECT * FROM branch");
+                      while($row=mysqli_fetch_array($res))
+                      {
+                        ?>
+                        <option value="<?php echo $row["branchid"]; ?>"><?php echo $row["branchname"]?></option>
+                      <?php  
+                      }
+                      ?>  
+
+                      ?>
+                    </select> 
                 </div>
                <div class="form-group col-lg-4">
                     <label>Building ID*</label>

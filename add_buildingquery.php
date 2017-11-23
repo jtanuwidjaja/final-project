@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['register'])){
     
-    $branchid=$_POST['branchid'];
+    $branchid=$_POST['branchdd'];
     $buildingname=$_POST['buildingname'];
     $buildingid=$_POST['buildingid'];
     $buildingaddress=$_POST['buildingaddress'];
