@@ -2,6 +2,11 @@
     include("loginserv.php");
     include("select_param.php");
 
+     if ($_SESSION["role"] != "0") {
+    //$_SESSION['msg'] = "You must log in first";
+    header("location: login.php");
+}
+
 
 ?>
 <!doctype html>

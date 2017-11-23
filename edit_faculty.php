@@ -1,17 +1,13 @@
 <?php
     include("loginserv.php");
     include("edit_facultyquery.php");
-    
-    if ($_SESSION["role"] == "administrator") {
-        $userid = $_GET["ID"];
-    }
-    else {
-        $userid = $_SESSION["userid"];
+
+    if ($_SESSION["role"] != "0") {
+    //$_SESSION['msg'] = "You must log in first";
+    header("location: login.php");
     }
     
-    $conn = mysqli_connect("localhost", "root", "root");
-    //Selecting Database
-    $db = mysqli_select_db($conn, "MRBS");
+    include "includes/DB_connection.php";
     //sql query to fetch information of registerd user and finds user match.
 
     $facultyid = $_GET['ID'];
