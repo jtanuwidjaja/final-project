@@ -142,7 +142,6 @@
                             while($row = mysqli_fetch_array($facultyquery)){
                                 echo '<option value="'.$row["facultyid"].'"';
                                 if(isset($faculty)){
--                                    if ($row["facultyid"] == $faculty) {
                                     if ($row["facultyid"] == $faculty) {
                                         echo ' selected';
                                     }
