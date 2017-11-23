@@ -152,7 +152,8 @@ function create_calendar() {
         selectable: true,
         select: function(start, end, allDay) {
             insert_event(start, end, allDay);
-        }
+        },
+        allDaySlot: false
             
     });
 }
