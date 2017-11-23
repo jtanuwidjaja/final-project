@@ -78,7 +78,7 @@
                 $re['resourceId'] = $row['roomid'];
                 $re['title'] = $row['classname'];
                 $re['start'] = $repeat_dateDB.'T'.$row['time_start'];     $re['end'] = $repeat_dateDB.'T'.$row['time_end'];
-                if ($role !=0 && $row['facultyid'] != $faculty) {
+                if ($role !=0 && $row['facultyid'] != $userfaculty) {
                     $re['editable'] = false;
                     $re['className'] = "readonly";   
                 }

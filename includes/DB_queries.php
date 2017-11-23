@@ -73,11 +73,20 @@ return $query;
 function select_booking($id) {
     require("./includes/DB_connection.php");
     $query = mysqli_query($conn,"
-        SELECT *
+        SELECT bookingrecord.roomid,
+        bookingrecord.bookingdate,
+        bookingrecord.capacity,
+        bookingrecord.time_start,
+        bookingrecord.time_end,
+        building.branchid,
+        bookingrecord.facultyid,
+        bookingrecord.bookingrepeat,
+        bookingrecord.end_repeat,
+        bookingrecord.classname,
+        bookingrecord.tutor
         FROM bookingrecord 
         JOIN room ON room.roomid = bookingrecord.roomid 
         JOIN building ON building.buildingid = room.buildingid
-        JOIN branch ON branch.branchid = building.branchid
         WHERE bookingid = '$id'") or trigger_error(mysql_error());
 return $query;
 }
@@ -85,7 +94,8 @@ function insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$
     require("./includes/DB_connection.php");
     $query = mysqli_query($conn, 
             "INSERT INTO `bookingrecord`(`bookingdate`, `roomid`, `time_start`, `login`, `time_end`, `facultyid`, `classname`, `capacity`, `bookingrepeat`, `end_repeat`,`tutor`) VALUES ('$dateDB','$roomid','$time_start','$userid','$time_end','$faculty','$classname','$capacity','$repeat','$end_repeatDB','$tutor')") or trigger_error(mysql_error());
-return $query;
+    $id = mysqli_insert_id($conn);
+return $id;
 }
 
 function  get_user_list() {

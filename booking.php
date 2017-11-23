@@ -1,6 +1,6 @@
 <?php
     include("loginserv.php");
-    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2")) {
         header("location: index.php");
     }
 
@@ -24,7 +24,9 @@
         $faculty = $rows["facultyid"];
     }
     
-    
+    $date = $_POST['date'];
+    $time_start = $_POST['time_start'];
+    $time_end = $_POST['time_end'];
 ?>
 
 <!doctype HTML5>
@@ -75,7 +77,7 @@
                 <div class="form-group col-lg-4 col-md-4">
                     <label >Date</label>
                     <div class='input-group date datepicker'>
-                       <input type='text' class="form-control rq" id="date" name="date">
+                       <input type='text' class="form-control rq" id="date" name="date" <?php echo 'value='.$date; ?>>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -84,7 +86,7 @@
                 <div class="form-group col-lg-4">
                     <label >Time from</label>
                     <div class='input-group date' id="timepickerfrom">
-                        <input type='text' class="form-control rq" id="time_start" name="time_start">
+                        <input type='text' class="form-control rq" id="time_start" name="time_start" <?php echo 'value='.$time_start; ?>>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                         </span>
@@ -93,7 +95,7 @@
                 <div class="form-group col-lg-4">
                     <label >Time to</label>
                     <div class='input-group date' id="timepickerto">
-                    <input type='text' class="form-control rq" id="time_end" name="time_end">
+                    <input type='text' class="form-control rq" id="time_end" name="time_end" <?php echo 'value='.$time_end; ?>>
                     <span class="input-group-addon">
                     <span class="glyphicon glyphicon-time"></span>
                     </span>
@@ -122,8 +124,10 @@
                             while($row = mysqli_fetch_array($campusquery)){
                                 
                                 echo '<option value="'.$row["branchid"].'"';
-                                if ($row["branchid"] == $branch) {
-                                    echo ' selected';
+                                if(isset($branch)) {
+                                    if ($row["branchid"] == $branch) {
+                                        echo ' selected';
+                                    }
                                 }
                                 echo '>'.$row["branchname"].'</option>';
                             }
@@ -137,9 +141,12 @@
                         <?php 
                             while($row = mysqli_fetch_array($facultyquery)){
                                 echo '<option value="'.$row["facultyid"].'"';
-                                if ($row["facultyid"] == $faculty) {
-                                    echo ' selected';
+                                if(isset($faculty)){
+                                    if ($row["facultyid"] == $faculty) {
+                                        echo ' selected';
+                                    }
                                 }
+    
                                 echo '>'.$row["facultyname"].'</option>';
                             }
                         ?>

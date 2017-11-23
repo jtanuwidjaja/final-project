@@ -36,9 +36,10 @@ mysqli_close($conn); // Closing connection
     
 </head>
 <body>
+    
 <!--Navigation bar-->
     <?php include("./includes/navi_bar.php")?>	   
-    
+    <div id="wrap">
 <div class="container">
     <div class="row">
             <div class="col-lg-12">
@@ -147,7 +148,7 @@ mysqli_close($conn); // Closing connection
     <p><a href="registration.php">Create new user</a></p>
       
 </div>
-    
+    </div>
     <!--Footer-->
     <?php include("./includes/footer.php");?>
 <!--Java Script   -->

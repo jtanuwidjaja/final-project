@@ -1,5 +1,8 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
+
 $error=''; //Variable to Store error message;
 $conf=''; //Variable for confirmation of registration
 if(isset($_POST['submit'])){
@@ -39,7 +42,7 @@ if(isset($_POST['submit'])){
                 $_SESSION["name"] = $row["first_name"].' '.$row["last_name"];
                 $_SESSION["role"] = $row["role"];
                 $_SESSION["login"] = $row["login"];
-                header("Location: index.php"); 
+                header("Location: calendar.php"); 
                    
             }
             else

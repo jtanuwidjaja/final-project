@@ -16,11 +16,39 @@ include("loginserv.php"); // Include loginserv for checking username and passwor
     <link href="css/bootstrap.min.css" rel="stylesheet">
 <!--    <link rel="stylesheet" href="css/login.css">-->
     <script src='https://www.google.com/recaptcha/api.js'></script>
+    <style>
+
+            input[type=text] {
+            background-color: #F6B03F;
+            color: black;
+        }
+        input[type=password] {
+            background-color: #F6B03F;
+            color: black;
+        }
+
+        #box{
+            background-color: black;
+        }
+
+        .container{
+            opacity: 0.9;
+        }
+        body{
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+             color:white;
+            background: url(images/meeting_room1_003.jpg) no-repeat center top;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-size: 100%;
+        }
+    </style>
 </head> 
     
 <body>
   <div class="container">
-        <div class="card-container">
+        <div class="card-container" id="box">
             <form action="" method="post" onchange="checkform()">
                 <h1>Login</h1> 
                 <div class="form-group">

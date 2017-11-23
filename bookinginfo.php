@@ -68,9 +68,10 @@
         
         //If classroom is available, then create booking record.
         if($rows == 1){
-            $query = insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor);
+            //echo "laskdjlaksjd";
+            $id = insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor);
             
-            header("Location: index.php");
+            header("Location: ./phpmailer/mail.php?ID=".$id.'&type=new');
         }
         else {
             $error = "Classroom can't be booked. Please, change booking parameters.";
