@@ -38,7 +38,7 @@
                 }
 
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="branch.php">Branch List</a></li>';
+                echo '<li><a href="branch.php">Branch</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
                 echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
                 }
