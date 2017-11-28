@@ -19,17 +19,18 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="navibar" class="nav navbar-nav">
             <li><a href="calendar.php">Home</a></li>
-            <li><a href="Booking.php">Booking</a></li>
+            <li><a href="booking.php">Booking</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catalogue<span class="caret"></span></a>
               <ul class="dropdown-menu">
 
                 <?php 
+
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="room_list.php">Room List</a></li>';
+                echo '<li><a href="branch.php">Branch</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
-                } 
+                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
+                }
 
                 if(($_SESSION["role"] == "0")){
                 echo '<li><a href="building.php">Building</a></li>';
@@ -38,17 +39,16 @@
                 }
 
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="branch.php">Branch</a></li>';
-                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
-                }
-
-
-                if(($_SESSION["role"] == "0")){
                 echo '<li><a href="faculty.php">Faculty</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
                 echo '<li><a href="faculty.php" class="content hidden">Faculty</a></li>';}
                 }
+
+                if(($_SESSION["role"] == "0")){
+                echo '<li><a href="room_list.php">Room List</a></li>';
+                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
+                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
+                } 
 
                  if (($_SESSION["role"] == "0" || ($_SESSION["role"] == "1"))) { 
                 echo '<li role="separator" class="divider"></li>

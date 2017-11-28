@@ -23,7 +23,7 @@
 </head>
 <body>
      <?php include "includes/navi_bar.php";?>
-    
+    <div id="wrap">
     <div class="container"> 
        <div class="row">
             <div class="col-lg-12">
@@ -38,7 +38,10 @@
     <?php
     include "includes/DB_connection.php";
     //sql query to fetch information of registerd user and find user match.
-    $query = mysqli_query($conn, "SELECT * FROM building");
+    $query = mysqli_query($conn, "SELECT branch.*, building.*
+                        FROM branch, building 
+                        WHERE branch.branchid = building.branchid 
+                        ORDER BY branch.branchname ASC, building.buildingname ASC, building.nlevel ASC;");
                     
     echo '
         <form method=post action=update_service.php>
@@ -46,7 +49,6 @@
     echo '
                 <thead>
                     <tr>
-                        <th>Branch ID</th>
                         <th>Building ID</th>
                         <th>Building Name</th>
                         <th>Address</th>
@@ -58,7 +60,7 @@
                 </thead>
                 <tbody>';
     while($row = mysqli_fetch_array($query))
-        
+       
     
     {   //Creates a loop to loop through results 
         
@@ -67,10 +69,7 @@
         echo '
                 <tr>
                     <td>
-                    '.$row["branchid"].'
-                    </td>
-                    <td>
-                    '.$row["buildingid"].'
+                    '.$row["branchname"].'
                     </td>
                     <td>
                     '.$row["buildingname"].'
@@ -96,6 +95,7 @@
     echo '<p><a href="add_building.php" class="btn btn-primary">Add a new building</a></p>';
     mysqli_close($conn); // Closing connection
     ?>
+        </div>
         </div>
 
         

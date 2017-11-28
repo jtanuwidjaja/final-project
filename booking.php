@@ -24,7 +24,7 @@
         $faculty = $rows["facultyid"];
     }
     
-    if(isset($date)){$date = $_POST['date'];
+    if(isset($_POST['date'])){$date = $_POST['date'];
     $time_start = $_POST['time_start'];
     $time_end = $_POST['time_end'];}
 ?>
@@ -58,7 +58,7 @@
 </head>
 <body>
     <!--Navigation bar-->
-    <?php include("./includes/navi_bar.php")?>	
+    <?php include("./includes/navi_bar.php");?>	
     
     <div class="container"> 
        <div class="row">

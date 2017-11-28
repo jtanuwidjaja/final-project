@@ -42,10 +42,6 @@
         <form action="" method="post" onchange="checkform()" role="form">
            <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Branch ID*</label>
-                    <input type="text" class="form-control rq" id="branchid" name="branchid" placeholder="Enter Branch ID">
-                </div>
-                <div class="form-group col-lg-4">
                     <label>Branch Name*</label>
                     <input type="text" class="form-control rq"  id="branchname" name="branchname" placeholder="Enter Branch Name">
                 </div>

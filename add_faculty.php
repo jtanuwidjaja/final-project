@@ -40,10 +40,6 @@
         <form action="" method="post" onchange="checkform()" role="form">
            <div class="row"> 
                 <div class="form-group col-lg-4">
-                    <label >Faculty ID*</label>
-                    <input type="text" class="form-control rq" id="facultyid" name="facultyid" placeholder="Enter Faculty ID">
-                </div>
-                <div class="form-group col-lg-4">
                     <label>Faculty Name*</label>
                     <input type="text" class="form-control rq"  id="facultyname" name="facultyname" placeholder="Enter Faculty Name">
                 </div>

@@ -52,7 +52,7 @@
 <body>
 	
 <?php include "includes/navi_bar.php";?>
-    
+<div id="wrap">    
 <div class="container"> 
        <div class="row">
             <div class="col-lg-12">
@@ -167,6 +167,8 @@
         </form>
         
 </div>    
+</div>
+
 <!--Footer-->
 <?php include("./includes/footer.php");?>
 <!--Java Script   -->
