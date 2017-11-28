@@ -6,9 +6,7 @@ if(isset($_POST['save'])){
     
     
         //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-        $conn = mysqli_connect("localhost", "root", "root");
-        //Selecting Database
-        $db = mysqli_select_db($conn, "MRBS");
+        include "includes/DB_connection.php";
         //sql query to fetch information of registerd user and finds user match.
         $query = mysqli_query($conn, "UPDATE `faculty` SET `facultyname`='$facultyname' WHERE `facultyid`='$facultyid'");
         
