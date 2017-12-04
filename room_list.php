@@ -1,6 +1,5 @@
 <?php 
 include("loginserv.php");
-//here I am checking for session expiry
 if ($_SESSION["role"] != "0") {
 	//$_SESSION['msg'] = "You must log in first";
     header("location: login.php");

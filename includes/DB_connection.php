@@ -5,9 +5,9 @@ $host = "localhost";
 //Define user login for DB connection
 $login = "root";
 //Define user password for DB connection
-$password = "root";
+$password = "";
 //Define database name
-$dbname = "RoomAllocation";
+$dbname = "roomallocation";
 //--------------------------------------
 
 //Connection to database commands. Do not modify!

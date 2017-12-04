@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `ClassroomAllocationSystem`
+-- Database: `MRBS`
 --
 
 -- --------------------------------------------------------
@@ -25,16 +25,34 @@ CREATE TABLE `bookingrecord` (
   `bookingdate` date NOT NULL,
   `roomid` int(11) NOT NULL,
   `time_start` time NOT NULL,
-  `login` varchar(30) NOT NULL,
+  `userid` varchar(30) NOT NULL,
   `time_end` time NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `facultyid` int(11) NOT NULL,
   `classname` varchar(180) NOT NULL,
   `capacity` int(11) NOT NULL,
   `bookingrepeat` tinyint(4) NOT NULL,
-  `end_repeat` date NOT NULL,
-  `tutor` varchar(30) NOT NULL
+  `end_repeat` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meeting`
+--
+
+CREATE TABLE `meeting` (
+  `meetingid` int(11) NOT NULL,
+  `meetingname` varchar(30) NOT NULL,
+  `meetingdesc` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `meeting`
+--
+
+INSERT INTO `meeting` (`meetingid`, `meetingname`, `meetingdesc`) VALUES
+(1, 'chilly talks', 'chilly talks');
 
 -- --------------------------------------------------------
 
@@ -48,7 +66,7 @@ CREATE TABLE `room` (
   `buildingid` int(11) NOT NULL,
   `level` int(11) NOT NULL,
   `capacity` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -75,6 +93,32 @@ ALTER TABLE `room`
 ALTER TABLE `room`
   MODIFY `roomid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `slot`
+--
+
+CREATE TABLE `slot` (
+  `slotid` int(11) NOT NULL,
+  `slotdesc` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `slot`
+--
+
+INSERT INTO `slot` (`slotid`, `slotdesc`) VALUES
+(1, '9 am - 10 am'),
+(2, '10 am - 11 am'),
+(3, '11 am - 12 pm'),
+(4, '12 pm - 01 pm'),
+(5, '02 pm - 03 pm'),
+(6, '04 pm - 05 pm'),
+(7, '05 pm - 06 pm');
+
 -- --------------------------------------------------------
 
 --
@@ -82,22 +126,25 @@ ALTER TABLE `room`
 --
 
 CREATE TABLE `user` (
-  `login` varchar(30) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  `first_name` varchar(30) NOT NULL,
-  `last_name` varchar(30) DEFAULT NULL,
-  `role` tinyint(1) NOT NULL,
-  `phone` varchar(15) DEFAULT NULL,
+  `userid` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `role` varchar(30) NOT NULL,
+  `age` tinyint(4) NOT NULL,
+  `phone` varchar(15) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `gender` tinyint(1) NOT NULL,
-  `branchid` int(2) DEFAULT NULL,
-  `facultyid` int(2) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL
+  `gender` varchar(10) NOT NULL,
+  `status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
+
+INSERT INTO `user` (`userid`, `password`, `username`, `role`, `age`, `phone`, `email`, `gender`, `status`) VALUES
+('admin', 'admin', 'Administrator', 'administrator', 99, '0274993333', 'adementyev86@gmail.com', 'male', 1),
+('customer', 'customer', 'customer', 'customer', 99, '0274993399', 'adementyev86@gmail.com', 'male', 1),
+('staff', 'staff', 'Staff', 'staff', 99, '0274923333', 'adementyev86@gmail.com', 'male', 1);
 
 --
 -- Indexes for dumped tables
@@ -110,10 +157,24 @@ ALTER TABLE `bookingrecord`
   ADD PRIMARY KEY (`bookingid`);
 
 --
+-- Indexes for table `meeting`
+--
+ALTER TABLE `meeting`
+  ADD PRIMARY KEY (`meetingid`);
+
+
+--
+-- Indexes for table `slot`
+--
+ALTER TABLE `slot`
+  ADD PRIMARY KEY (`slotid`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`login`);
+  ADD PRIMARY KEY (`userid`);
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -123,12 +184,22 @@ ALTER TABLE `user`
 --
 ALTER TABLE `bookingrecord`
   MODIFY `bookingid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+--
+-- AUTO_INCREMENT for table `meeting`
+--
+ALTER TABLE `meeting`
+  MODIFY `meetingid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
   MODIFY `roomid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `slot`
+--
+ALTER TABLE `slot`
+  MODIFY `slotid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 
 --
 -- Table structure for table `branch`
