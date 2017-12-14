@@ -1,8 +1,8 @@
 <?php
     include("loginserv.php");
-//    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
-//        header("location: index.php");
-//    }
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2")) {
+        header("location: index.php");
+    }
     include("./includes/DB_queries.php");
     
     $campusquery = get_branch_list();
@@ -34,9 +34,9 @@
 </head>
 <body>
     <!--Navigation bar-->
-    <?php include("./includes/navi_bar.php")?>	
-<!--    <?php include("get_events.php")?>-->
-<!--<?php include("get_rooms.php")?>-->
+<?php include("./includes/navi_bar.php");?>	
+<?php include("get_events.php");?>
+<?php include("get_rooms.php");?>
     <div class="container">
         <div class="row">
             <div class="form-group col-lg-4">
