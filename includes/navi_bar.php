@@ -19,7 +19,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="navibar" class="nav navbar-nav">
             <li><a href="calendar.php">Home</a></li>
-            <li><a href="Booking.php">Booking</a></li>
+            <li><a href="booking.php">Booking</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catalogue<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -38,7 +38,7 @@
                 }
 
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="branch.php">Branch</a></li>';
+                echo '<li><a href="branch.php">Branch List</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
                 echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
                 }
@@ -113,13 +113,13 @@
     <script type="text/javascript">
      $('document').ready(function() {
         $('.navbar-collapse li a').each(function() {
-            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
+            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().addClass('active');
             }
         });
          $('.navbar-collapse li a').each(function() {
-            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
+            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().parent().parent().addClass('active');
             }

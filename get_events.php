@@ -5,8 +5,12 @@
     include("./includes/DB_connection.php");
 
     $branch = $_POST['branch'];
+    //$tutor = 'tutor1';
+    $tutor = $_POST['tutor'];
+
     //$branch = 1;
     //echo 'event'.$ubranch.' ';
+    
 
     //defining the faculty for registered user (faculty will need define editable events)
     $userid = $_SESSION['login'];
@@ -15,12 +19,22 @@
     $row = mysqli_fetch_array($query);
     $userfaculty = $row['facultyid'];
     $role = $row['role'];
+    if (isset($_POST['tutor'])) {
+        $query = mysqli_query($conn, "
+            SELECT * FROM bookingrecord
+            JOIN room ON bookingrecord.roomid = room.roomid 
+            JOIN building ON room.buildingid = building.buildingid
+            WHERE building.branchid = $branch AND bookingrecord.tutor ='$tutor' ");
+
+    }
+    else {
+        $query = mysqli_query($conn, "
+            SELECT * FROM bookingrecord
+            JOIN room ON bookingrecord.roomid = room.roomid 
+            JOIN building ON room.buildingid = building.buildingid
+            WHERE building.branchid = $branch");
+    }
     
-    $query = mysqli_query($conn, "
-    SELECT * FROM bookingrecord
-    JOIN room ON bookingrecord.roomid = room.roomid 
-    JOIN building ON room.buildingid = building.buildingid
-    WHERE building.branchid = $branch");
     
     $events = array();
     

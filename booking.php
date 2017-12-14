@@ -24,7 +24,7 @@
         $faculty = $rows["facultyid"];
     }
     
-    if(isset($date)){$date = $_POST['date'];
+    if(isset($_POST['date'])){$date = $_POST['date'];
     $time_start = $_POST['time_start'];
     $time_end = $_POST['time_end'];}
 ?>

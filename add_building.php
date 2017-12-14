@@ -46,7 +46,6 @@
                 <div class="form-group col-lg-4">
                      <label for="ex2">Select Branch</label>
                  <select class="form-control" id="branchdd" name="branchdd" onchange="change_branch()">
-                      <option>Select</option>
                       <?php 
                       $res=mysqli_query($conn,"SELECT * FROM branch");
                       while($row=mysqli_fetch_array($res))
@@ -59,10 +58,6 @@
 
                       ?>
                     </select> 
-                </div>
-               <div class="form-group col-lg-4">
-                    <label>Building ID*</label>
-                    <input type="text" class="form-control rq"  id="buildingid" name="buildingid" placeholder="Enter Building ID">
                 </div>
                 <div class="form-group col-lg-4">
                     <label>Building Name*</label>

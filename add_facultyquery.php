@@ -1,15 +1,12 @@
 <?php
 if(isset($_POST['register'])){
     
-    $facultyid=$_POST['facultyid'];
     $facultyname=$_POST['facultyname'];
 
     
-    
-        //Establishing Connection with server by passing server_name, user_id and pass as a parameter
-        include "includes/DB_connection.php";
-        //sql query to fetch information of registerd user and finds user match.
-        $query = mysqli_query($conn, "INSERT INTO `Faculty`(`facultyid`, `facultyname`) VALUES ('$facultyid','$facultyname')");
+        include "./includes/DB_connection.php";
+                //sql query to fetch information of registerd user and finds user match.
+        $query = mysqli_query($conn, "INSERT INTO `faculty`(`facultyname`) VALUES ('$facultyname')");
         
         if(! $query ) {
             $error = "User name is already existed. Please, enter another User name";   

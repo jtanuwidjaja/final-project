@@ -1,6 +1,5 @@
 <?php 
 include("loginserv.php");
-//here I am checking for session expiry
 if ($_SESSION["role"] != "0") {
 	//$_SESSION['msg'] = "You must log in first";
     header("location: login.php");
@@ -34,7 +33,7 @@ if ($_SESSION["role"] != "0") {
 <body>
   
 <?php include "includes/navi_bar.php";?>
-    
+    <div id="wrap">
 <div class="container">
     <div class="row">
             <div class="col-lg-12">
@@ -50,8 +49,10 @@ if ($_SESSION["role"] != "0") {
    
     include ("includes/DB_connection.php");
     //sql query to fetch information of registerd user and finds user match.
-    $query = mysqli_query($conn, "SELECT * FROM branch LEFT JOIN building ON branch.branchid=building.branchid LEFT JOIN room ON building.buildingid=room.buildingid ORDER BY building.buildingname ASC, room.level ASC, room.roomname ASC, room.capacity ASC;"
-        );
+    $query = mysqli_query($conn, "SELECT branch.*, building.*, room.*
+                        FROM branch, building, room
+                        WHERE branch.branchid = building.branchid AND building.buildingid = room.buildingid"
+);
 
                     
     echo '
@@ -172,7 +173,7 @@ if ($_SESSION["role"] != "0") {
    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
   <!--  <script src="js/bootstrap.min.js"></script> -->
-   <br><br><br><br><br><br>
-    <?php include "includes/footer.php";?>
+   </div>
+       <?php include "includes/footer.php";?>
 </body>
 </html>

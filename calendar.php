@@ -1,15 +1,14 @@
 <?php
     include("loginserv.php");
-    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2") ) {
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2")) {
         header("location: index.php");
     }
     include("./includes/DB_queries.php");
     
     $campusquery = get_branch_list();
-
+    $userid = $_SESSION['login'];
     //searching branch for administrators of faculties
     if ($_SESSION["role"] == 1) {
-        $userid = $_SESSION['login'];
         $userbrachquery = mysqli_query($conn, 
        "SELECT branchid, facultyid FROM user WHERE login = '$userid'");
         $rows = mysqli_fetch_array($userbrachquery);
@@ -35,9 +34,9 @@
 </head>
 <body>
     <!--Navigation bar-->
-    <?php include("./includes/navi_bar.php")?>	
-<!--    <?php include("get_events.php")?>-->
-<!--<?php include("get_rooms.php")?>-->
+<?php include("./includes/navi_bar.php");?>	
+<?php include("get_events.php");?>
+<?php include("get_rooms.php");?>
     <div class="container">
         <div class="row">
             <div class="form-group col-lg-4">
@@ -92,13 +91,30 @@ $('#campus').change(function(){
 function create_calendar() {
     $('#calendar').fullCalendar({
         schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-        editable: true,
+        <?php 
+                        if($_SESSION["role"] == 2) 
+                            echo "
+                                editable: false,
+                                selectable: false,                                
+                            "; 
+                        else 
+                            echo "
+                                editable: true,
+                                selectable: true,
+                                eventClick: function(calEvent, jsEvent, view) {
+                                        show_event_info (calEvent, jsEvent, view);          
+                                },
+                            "; 
+                    ?>
         aspectRatio: 1.8,
         scrollTime: '00:00',
         header: {
             left: 'today prev,next',
             center: 'title',
-            right: 'timelineDay,agendaWeek,month'
+            right: <?php 
+                        if($_SESSION["role"] == 2) echo "'agendaWeek,month'"; 
+                        else echo "'timelineDay,agendaWeek,month'";
+                    ?>
         },
         defaultView: Cookies.get('fullCalendarCurrentView') || 'timelineDay',
         defaultDate: Cookies.get('fullCalendarCurrentDate') || null,
@@ -128,6 +144,7 @@ function create_calendar() {
             type: 'POST',
             data: {
                     branch: $('#campus option:selected').val()
+                    <?php if($_SESSION["role"] == 2) echo ",tutor: '$userid'"; ?>
                 }
         },
 
@@ -138,18 +155,6 @@ function create_calendar() {
         eventResize: function(event, delta, revertFunc) {
             update_event(event, delta, revertFunc);
         },
-        eventClick: function(calEvent, jsEvent, view) {
-            window.location = "show_event_info.php?id=" + calEvent.id;
-            var method = 'POST';
-            var path = 'show_event_info.php';
-            var params = new Array();
-            params['id'] = calEvent.id;
-    //        params['event_start'] = calEvent.start;
-    //        params['event_end'] = calEvent.end;
-    //        params['event_user_id'] = calEvent.user_id;
-            post_to_url(path, params, method);
-        },
-        selectable: true,
         select: function(start, end, allDay) {
             insert_event(start, end, allDay);
         },
@@ -192,6 +197,14 @@ function insert_event(start, end, allDay) {
     //        params['event_start'] = calEvent.start;
     //        params['event_end'] = calEvent.end;
     //        params['event_user_id'] = calEvent.user_id;
+    post_to_url(path, params, method);
+}
+function show_event_info (calEvent, jsEvent, view) {
+    window.location = "show_event_info.php?id=" + calEvent.id;
+    var method = 'POST';
+    var path = 'show_event_info.php';
+    var params = new Array();
+    params['id'] = calEvent.id;
     post_to_url(path, params, method);
 }
     

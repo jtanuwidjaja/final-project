@@ -70,9 +70,6 @@
                 <button type="submit" class="btn btn-primary" name="save" id="signup" disabled>Save</button>
             </div>
             
-                     <p><a href="branch.php">Back to previous page</a></p>
-     
-            
 
                     <!-- Error Message -->
                     <br><br>
