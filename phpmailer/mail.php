@@ -13,10 +13,10 @@ $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 $mail->SMTPAuth = true;                               // Enable SMTP authentication
 $mail->Username = 'lavishmakeupsalon@gmail.com';                 // SMTP username
 $mail->Password = 'Lavi$hPASS';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-$mail->Port = 587;                                    // TCP port to connect to
+$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+$mail->Port = 465;                                    // TCP port to connect to
 
-$mail->setFrom('info@Lavish.com', 'Aspire2 Classroom Allocation System');
+$mail->setFrom('lavishmakeupsalon@gmail.com', 'Aspire2 Classroom Allocation System');
 
 //$mail->addAddress('ellen@example.com');               // Name is optional
 //$mail->addReplyTo('info@example.com', 'Information');

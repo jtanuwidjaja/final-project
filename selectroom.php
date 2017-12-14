@@ -11,7 +11,7 @@
     $capacity = $_POST['capacity'];
     $repeat = $_POST['repeat'];
     $end_repeat = $_POST['end_repeat'];
-    $end_repeatDB =  $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
+    $end_repeatDB =  $end_repeat.$end_repeat.$end_repeat.$end_repeat.'-'.$end_repeat.$end_repeat.'-'.$end_repeat.$end_repeat;
     
     if ($repeat > 0) {
         //Defining last repeat date for query

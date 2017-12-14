@@ -58,7 +58,7 @@
 </head>
 <body>
     <!--Navigation bar-->
-    <?php include("./includes/navi_bar.php");?>	
+    <?php include("./includes/navi_bar.php")?>	
     
     <div class="container"> 
        <div class="row">
