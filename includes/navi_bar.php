@@ -25,12 +25,11 @@
               <ul class="dropdown-menu">
 
                 <?php 
-
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="branch.php">Branch</a></li>';
+                echo '<li><a href="room_list.php">Room List</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
-                }
+                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
+                } 
 
                 if(($_SESSION["role"] == "0")){
                 echo '<li><a href="building.php">Building</a></li>';
@@ -39,16 +38,17 @@
                 }
 
                 if(($_SESSION["role"] == "0")){
+                echo '<li><a href="branch.php">Branch List</a></li>';
+                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
+                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
+                }
+
+
+                if(($_SESSION["role"] == "0")){
                 echo '<li><a href="faculty.php">Faculty</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
                 echo '<li><a href="faculty.php" class="content hidden">Faculty</a></li>';}
                 }
-
-                if(($_SESSION["role"] == "0")){
-                echo '<li><a href="room_list.php">Room List</a></li>';
-                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
-                } 
 
                  if (($_SESSION["role"] == "0" || ($_SESSION["role"] == "1"))) { 
                 echo '<li role="separator" class="divider"></li>
@@ -113,13 +113,13 @@
     <script type="text/javascript">
      $('document').ready(function() {
         $('.navbar-collapse li a').each(function() {
-            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
+            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().addClass('active');
             }
         });
          $('.navbar-collapse li a').each(function() {
-            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
+            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().parent().parent().addClass('active');
             }

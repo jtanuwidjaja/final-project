@@ -6,7 +6,7 @@
     include("./includes/DB_queries.php");
     
     //Receiving parameters from booking.php page
-    $roomid = $_POST["roomid"];
+    if(isset($_POST["roomid"])){$roomid = $_POST["roomid"];}
     $date = $_POST["date"];
     $time_start = date('H:i:s',strtotime($_POST['time_start']));
     $time_end = date('H:i:s',strtotime($_POST['time_end'])); 
@@ -41,12 +41,15 @@
         $capacity = $_POST['capacity'];
         $classname = $_POST['classname'];
         $repeat = $_POST['repeat'];
-        $end_repeat = $_POST['end_repeat'];
-        $end_repeatDB = $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
+       
         $tutor = $_POST['tutor'];
         
         
         if ($repeat > 0) {
+        $end_repeat = $_POST['end_repeat'];
+        $end_repeatDB = $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
+            
+            
         //Defining last repeat date for query
         $formated_date = date_create($dateDB);
         $formated_end_repeat = date_create($end_repeatDB);
@@ -65,19 +68,13 @@
         $query = check_room_availability(0,$roomid,$capacity,$branch,$faculty,$dateDB,$repeat,$last_repeat,$time_start,$time_end);
         
         $rows = mysqli_num_rows($query);
-
         
         //If classroom is available, then create booking record.
         if($rows == 1){
             //echo "laskdjlaksjd";
-
             $id = insert_booking($dateDB,$roomid,$time_start,$userid,$time_end,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor);
-
             
-            header("Location: ./phpmailer/mail.php?ID=".$id.'&type=new');
-
-            session_write_close();
-            fastcgi_finish_request();
+            header("Location: phpmailer/mail.php?ID=".$id.'&type=new');
         }
         else {
             $error = "Classroom can't be booked. Please, change booking parameters.";
@@ -104,7 +101,7 @@
 <body>
     
     <!--Navigation bar-->
-    <?php include("./includes/navi_bar.php");?>	
+    <?php include("./includes/navi_bar.php")?>	
     
     <div class="container">
         <div class="row">
@@ -117,7 +114,7 @@
        </div>
         <form action="" method="post" onchange="checkform()" role="form" class="check_rq_fields">
 <!--        All fields for booking record card-->
-            <?php include("booking_fields.php");?>
+            <?php include("booking_fields.php")?>
             
             <div class="row col-lg-4">
                 <button type="submit" class="btn btn-primary" name="book" id="signup" disabled>Book</button>
