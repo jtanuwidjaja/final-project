@@ -25,11 +25,12 @@
               <ul class="dropdown-menu">
 
                 <?php 
+
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="room_list.php">Room List</a></li>';
+                echo '<li><a href="branch.php">Branch</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
-                } 
+                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
+                }
 
                 if(($_SESSION["role"] == "0")){
                 echo '<li><a href="building.php">Building</a></li>';
@@ -38,17 +39,16 @@
                 }
 
                 if(($_SESSION["role"] == "0")){
-                echo '<li><a href="branch.php">Branch List</a></li>';
-                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
-                echo '<li><a href="branch.php" class="content hidden">Branch List</a></li>';}
-                }
-
-
-                if(($_SESSION["role"] == "0")){
                 echo '<li><a href="faculty.php">Faculty</a></li>';
                 if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
                 echo '<li><a href="faculty.php" class="content hidden">Faculty</a></li>';}
                 }
+
+                if(($_SESSION["role"] == "0")){
+                echo '<li><a href="room_list.php">Room List</a></li>';
+                if(($_SESSION["role"] == "1" || ($_SESSION["role"] == "0"))){
+                echo '<li><a href="room_list.php" class="content hidden">Room List</a></li>';}
+                } 
 
                  if (($_SESSION["role"] == "0" || ($_SESSION["role"] == "1"))) { 
                 echo '<li role="separator" class="divider"></li>
@@ -97,7 +97,7 @@
           <ul class="nav navbar-nav navbar-right">
             <?php if (isset($_SESSION["name"])) { echo '
             <li><a href="userinfo.php?ID='.$_SESSION["login"].'">'.$_SESSION["name"].'</a></li>
-            <li><a href="index.php?logout.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>'; }
+            <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>'; }
             else {
                 echo '
             <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -113,13 +113,13 @@
     <script type="text/javascript">
      $('document').ready(function() {
         $('.navbar-collapse li a').each(function() {
-            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
+            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().addClass('active');
             }
         });
          $('.navbar-collapse li a').each(function() {
-            if ('https://rasaspire2.000webhostapp.com/'+$(this).attr('href') == window.location.href)
+            if ('http://localhost/developer/'+$(this).attr('href') == window.location.href)
             {
                 $(this).parent().parent().parent().addClass('active');
             }
