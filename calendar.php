@@ -34,9 +34,7 @@
 </head>
 <body>
     <!--Navigation bar-->
-<?php include("./includes/navi_bar.php");?>	
-<?php include("get_events.php");?>
-<?php include("get_rooms.php");?>
+    <?php include("./includes/navi_bar.php")?>	
     <div class="container">
         <div class="row">
             <div class="form-group col-lg-4">
@@ -95,19 +93,22 @@ function create_calendar() {
                         if($_SESSION["role"] == 2) 
                             echo "
                                 editable: false,
-                                selectable: false,                                
+                                selectable: false,
                             "; 
                         else 
                             echo "
                                 editable: true,
                                 selectable: true,
-                                eventClick: function(calEvent, jsEvent, view) {
-                                        show_event_info (calEvent, jsEvent, view);          
-                                },
                             "; 
                     ?>
+        
+        eventClick: function(calEvent, jsEvent, view) {
+                    show_event_info (calEvent, jsEvent, view);          
+        },
         aspectRatio: 1.8,
         scrollTime: '00:00',
+        minTime: "08:00:00",
+        maxTime: "22:00:00",
         header: {
             left: 'today prev,next',
             center: 'title',
@@ -122,12 +123,7 @@ function create_calendar() {
             Cookies.set('fullCalendarCurrentView', view.name, {path: ''});
             Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {path: ''});
         },
-//			views: {
-//				timelineThreeDays: {
-//					type: 'timeline',
-//					duration: { days: 3 }
-//				}
-//			},
+
         eventOverlap: false, // will cause the event to take up entire resource height
         resourceAreaWidth: '15%',
         resourceLabelText: 'Rooms',
@@ -171,7 +167,7 @@ function update_event(event, delta, revertFunc) {
             data: '&date='+ date+'&start='+ start +'&end='+ end +'&id='+ event.id + '&roomid='+ event.resourceId,
             type: "POST",
             success: function(json) {
-                    alert("Update successfully");
+                    //alert("Update successfully");
             },
             error: function(json) {
                     alert("There is some connection problems. Please contact to your system administrator.");

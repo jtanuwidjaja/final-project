@@ -1,8 +1,10 @@
 <?php
-session_start();
-unset($_SESSION['username']);
+include("loginserv.php");
+unset($_SESSION['login']);
+unset($_SESSION['role']);
+unset($_SESSION['name']);
+	   
+// Finally, destroy the session.
 session_destroy();
-
-header("Location: login.php");
-exit;
+header("location: index.php");
 ?>
