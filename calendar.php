@@ -35,8 +35,6 @@
 <body>
     <!--Navigation bar-->
     <?php include("./includes/navi_bar.php")?>	
-<!--    <?php include("get_events.php")?>-->
-<!--<?php include("get_rooms.php")?>-->
     <div class="container">
         <div class="row">
             <div class="form-group col-lg-4">
