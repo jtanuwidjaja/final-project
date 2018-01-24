@@ -1,8 +1,8 @@
 <?php
     include("loginserv.php");
-//    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
-//        header("location: index.php");
-//    }
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2")) {
+        header("location: index.php");
+    }
     include("./includes/DB_queries.php");
     
     $campusquery = get_branch_list();
