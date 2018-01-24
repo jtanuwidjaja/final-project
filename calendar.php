@@ -94,14 +94,16 @@ function create_calendar() {
         <?php 
                         if($_SESSION["role"] == 2) 
                             echo "
-                                editable: false,   
+                                editable: false,
+                                selectable: false,
                             "; 
                         else 
                             echo "
                                 editable: true,
+                                selectable: true,
                             "; 
                     ?>
-        selectable: true,
+        
         eventClick: function(calEvent, jsEvent, view) {
                     show_event_info (calEvent, jsEvent, view);          
         },
