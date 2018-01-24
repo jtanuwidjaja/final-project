@@ -1,6 +1,6 @@
 <?php
     include("loginserv.php");
-    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")&&($_SESSION["role"] != "2")) {
+    if (($_SESSION["role"] != "1")&&($_SESSION["role"] != "0")) {
         header("location: index.php");
     }
 
