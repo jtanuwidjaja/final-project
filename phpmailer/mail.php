@@ -1,9 +1,28 @@
 <?php
-require 'PHPMailerAutoload.php';
 
+$mailtype = $_GET["type"];
+
+if ($mailtype == "new" || $mailtype == "update" || $mailtype == "delete") {
+    sendmail ($mailtype);
+}
+else { //$mailtype == "changetutor"
+    //sendmail ("delete");
+    sendmail ("delete");
+    sendmail ("new");
+}
+
+header("location: ../calendar.php");
+                
+//header("location: ../index.html");
+                
+
+function sendmail($type) {
+    
+require_once 'PHPMailerAutoload.php';
 //Connection to the database
 include("../includes/DB_connection.php");
 
+    
 $mail = new PHPMailer;
 
 //$mail->SMTPDebug = 2;                               // Enable verbose debug output
@@ -13,10 +32,10 @@ $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 $mail->SMTPAuth = true;                               // Enable SMTP authentication
 $mail->Username = 'lavishmakeupsalon@gmail.com';                 // SMTP username
 $mail->Password = 'Lavi$hPASS';                           // SMTP password
-$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-$mail->Port = 465;                                    // TCP port to connect to
+$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+$mail->Port = 587;                                    // TCP port to connect to
 
-$mail->setFrom('lavishmakeupsalon@gmail.com', 'Aspire2 Classroom Allocation System');
+$mail->setFrom('info@Lavish.com', 'Aspire2 Classroom Allocation System');
 
 //$mail->addAddress('ellen@example.com');               // Name is optional
 //$mail->addReplyTo('info@example.com', 'Information');
@@ -27,11 +46,9 @@ $mail->setFrom('lavishmakeupsalon@gmail.com', 'Aspire2 Classroom Allocation Syst
 //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 $mail->isHTML(true);                                  // Set email format to HTML
 
-$book_id=$_GET["ID"];
-
-$type = $_GET["type"];
-
-//get info about previous information, if type = update
+$book_id = $_GET["ID"]; 
+    
+    //get info about previous information, if type = update
 if ($type == 'update' || $type == 'delete') {
     $roomid_old=$_GET["room"];
     //fetching room name
@@ -307,15 +324,7 @@ else { //type = Delete
 //}
 
     $mail->send();
-    header("location: ../calendar.php");
-                
-//header("location: ../index.html");
-                
-                
-
-            
-mysqli_close($conn); // Closing connection
-
-
+ mysqli_close($conn); // Closing connection   
+}
 
 ?>

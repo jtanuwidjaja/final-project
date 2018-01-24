@@ -1,5 +1,4 @@
 <?php
-   include("loginserv.php");
     
     include("./includes/DB_queries.php");
     
@@ -16,14 +15,11 @@
     $capacity = $_POST['capacity'];
     $classname = $_POST['classname'];
     $repeat = $_POST['repeat'];
-    
-    
+    $end_repeat = $_POST['end_repeat'];
+    $end_repeatDB = $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
     $tutor = $_POST['tutor'];
 
     if ($repeat > 0) {
-        $end_repeat = $_POST['end_repeat'];
-    $end_repeatDB =  $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
-       
         //Defining last repeat date for query
         $formated_date = date_create($dateDB);
         $formated_end_repeat = date_create($end_repeatDB);
@@ -75,7 +71,7 @@
             $query = update_booking($dateDB,$time_start,$time_end,$roomid,$userid,$faculty,$classname,$capacity,$repeat,$end_repeatDB,$tutor,$id);
 
             if ($tutor != $tutor_old) {
-                header("Location: phpmailer/mail.php?ID=".$id.'&type=new');  
+                header("Location: ./phpmailer/mail.php?ID=".$id.'&room='.$roomid_old.'&class='.$classname_old.'&date='.$date_old.'&time_start='.$time_start_old.'&time_end='.$time_end_old.'&repeat='.$repeat_old.'&end_repeat='.$end_repeat_old.'&capacity='.$capacity_old.'&tutor='.$tutor_old.'&faculty='.$faculty_old.'&type=changetutor');  
             }
             else {
                 header("Location: phpmailer/mail.php?ID=".$id.'&room='.$roomid_old.'&class='.$classname_old.'&date='.$date_old.'&time_start='.$time_start_old.'&time_end='.$time_end_old.'&repeat='.$repeat_old.'&end_repeat='.$end_repeat_old.'&capacity='.$capacity_old.'&tutor='.$tutor_old.'&faculty='.$faculty_old.'&type=update');  
