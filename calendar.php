@@ -94,18 +94,17 @@ function create_calendar() {
         <?php 
                         if($_SESSION["role"] == 2) 
                             echo "
-                                editable: false,
-                                selectable: false,                                
+                                editable: false,   
                             "; 
                         else 
                             echo "
                                 editable: true,
-                                selectable: true,
-                                eventClick: function(calEvent, jsEvent, view) {
-                                        show_event_info (calEvent, jsEvent, view);          
-                                },
                             "; 
                     ?>
+        selectable: true,
+        eventClick: function(calEvent, jsEvent, view) {
+                    show_event_info (calEvent, jsEvent, view);          
+        },
         aspectRatio: 1.8,
         scrollTime: '00:00',
         minTime: "08:00:00",
@@ -124,12 +123,7 @@ function create_calendar() {
             Cookies.set('fullCalendarCurrentView', view.name, {path: ''});
             Cookies.set('fullCalendarCurrentDate', view.intervalStart.format(), {path: ''});
         },
-//			views: {
-//				timelineThreeDays: {
-//					type: 'timeline',
-//					duration: { days: 3 }
-//				}
-//			},
+
         eventOverlap: false, // will cause the event to take up entire resource height
         resourceAreaWidth: '15%',
         resourceLabelText: 'Rooms',
