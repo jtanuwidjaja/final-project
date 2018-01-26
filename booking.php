@@ -187,7 +187,7 @@
         
         
         
-        <div class="row">
+        <div class="row" id="list">
             
             <table id="roomlist" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
             
@@ -238,6 +238,7 @@
             http.send ("date="+bdate+"&time_start="+time_start+"&time_end="+time_end+"&campus="+campus+"&faculty="+faculty+"&capacity="+capacity+"&repeat="+repeat+"&end_repeat="+end_repeat);
             
             document.getElementById("roomlist").innerHTML=http.responseText; 
+            //alert(http.responseText);
             
             $('#roomlist').DataTable();
             
