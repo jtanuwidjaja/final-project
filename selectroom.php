@@ -1,4 +1,6 @@
 <?php 
+
+
     //Connection to the database
     include("./includes/DB_connection.php");
         
@@ -11,8 +13,8 @@
     $capacity = $_POST['capacity'];
     $repeat = $_POST['repeat'];
     $end_repeat = $_POST['end_repeat'];
-    $end_repeatDB =  $end_repeat.$end_repeat.$end_repeat.$end_repeat.'-'.$end_repeat.$end_repeat.'-'.$end_repeat.$end_repeat;
-    
+    $end_repeatDB =  $end_repeat[6].$end_repeat[7].$end_repeat[8].$end_repeat[9].'-'.$end_repeat[3].$end_repeat[4].'-'.$end_repeat[0].$end_repeat[1];
+    //echo $end_repeat.' '.$end_repeatDB;
     if ($repeat > 0) {
         //Defining last repeat date for query
         $formated_date = date_create($dateDB);
@@ -24,6 +26,8 @@
         $last_repeat = $formated_end_repeat->format('Y-m-d');
     }
     else $last_repeat = $dateDB;
+
+    
        
     $query = mysqli_query($conn, 
         "SELECT room.roomid, room.roomname, building.buildingname, room.level, room.capacity FROM room 
@@ -46,8 +50,29 @@
     		) AND  
     		time_start < '$time_end' AND time_end > '$time_start'
         )"); 
-
-
+//echo $capacity.' '.$branch.' '.$faculty.' '.$last_repeat.' '.$dateDB.' '.$repeat.' '.$time_end.' '.$time_start;
+//
+//
+//echo "SELECT room.roomid, room.roomname, building.buildingname, room.level, room.capacity FROM room 
+//        JOIN building ON room.buildingid=building.buildingid
+//        LEFT JOIN restriction ON room.roomid=restriction.roomid
+//        WHERE 
+//        room.capacity >= '$capacity' AND
+//        building.branchid = '$branch' AND
+//        (restriction.facultyid = '$faculty' OR restriction.facultyid IS NULL) AND
+//        room.roomid NOT IN 
+//        (
+//            SELECT DISTINCT roomid FROM bookingrecord 
+//			WHERE
+//            (
+//                DATEDIFF(bookingdate, '$last_repeat') <= 0 AND
+//                DATEDIFF(DATE_SUB(end_repeat, INTERVAL (MOD(DATEDIFF(end_repeat, bookingdate),GREATEST(bookingrepeat,1))) DAY), '$dateDB') >= 0
+//    		) AND
+//            (
+//        		MOD(DATEDIFF(bookingdate, '$dateDB'),LEAST(bookingrepeat,$repeat)) = 0 OR MOD(DATEDIFF('$dateDB', bookingdate),LEAST(bookingrepeat,$repeat)) is NULL
+//    		) AND  
+//    		time_start < '$time_end' AND time_end > '$time_start'
+//        )";
 //    echo '
 //        <form>
 //            <table id="usertable" class="table table-striped table-bordered" cellspacing="0" width="100%">'; // start a table tag in the HTML
