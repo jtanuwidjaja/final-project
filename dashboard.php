@@ -401,8 +401,8 @@ function updatedashboard(){
                 
                     totutil = Math.round(100*(totutil/(total_num_of_rooms*minuteDuration)));
         
-                    total_util.push(util);
-                    total_util.push(100-util);
+                    total_util.push(totutil);
+                    total_util.push(100-totutil);
                 
                     colortotalutil.push(getGreenToRed(total_util[0]));
                     colortotalutil.push('rgba(255,255,255,1)');
